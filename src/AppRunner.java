@@ -47,6 +47,7 @@ public class AppRunner {
             new TimeLimitedButtonListener(simulator, grid, robot);
             new RealRunButtonListener(simulator, grid, robot);
             new RealRunCheckBoxListener(simulator);
+            new TestButtonListener(simulator, grid, robot);
 
             simulator.setVisible(true);
             System.out.println("Simulator started.");

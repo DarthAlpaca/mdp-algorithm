@@ -25,6 +25,7 @@ public class Simulator extends JFrame {
     private JButton mRealRunButton;
     private JCheckBox mRealRunCheckBox;
     private JFormattedTextField mRobotSpeedField;
+    private JButton mTestButton;
 
     // model
     private Grid mSimulationGrid;
@@ -49,6 +50,7 @@ public class Simulator extends JFrame {
         mRealRunCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
         mRobotSpeedField = new JFormattedTextField(NumberFormat.getIntegerInstance());
         mRobotSpeedField.setPreferredSize(new Dimension(50, mRobotSpeedField.getHeight()));
+        mTestButton = new JButton("Test");
 
         // set up as observer
         mSimulationRobot.addObserver((Observer) mMapPanel);
@@ -70,11 +72,12 @@ public class Simulator extends JFrame {
         bottomPanel.add(mTimeLimitedButton);
         bottomPanel.add(mCoverageLimitedButton);
         bottomPanel.add(mLoadMapButton);
+        bottomPanel.add(mTestButton);
         this.add(bottomPanel, BorderLayout.PAGE_END);
 
         // set up the frame
         pack();
-        setTitle("MDP Group 16 Simulator");
+        setTitle("2020 MDP Group 16 Simulator");
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -107,6 +110,10 @@ public class Simulator extends JFrame {
     public void addRealRunButtonListener(ActionListener actionListener) {
         mRealRunButton.addActionListener(actionListener);
     }
+    
+    public void addTestButtonListener(ActionListener actionListener) {
+    	mTestButton.addActionListener(actionListener);
+    }
 
     public void disableButtons() {
         mExplorationButton.setEnabled(false);
@@ -114,6 +121,7 @@ public class Simulator extends JFrame {
         mLoadMapButton.setEnabled(false);
         mTimeLimitedButton.setEnabled(false);
         mCoverageLimitedButton.setEnabled(false);
+        mTestButton.setEnabled(false);
     }
 
     public void enableButtons() {
@@ -122,6 +130,7 @@ public class Simulator extends JFrame {
         mLoadMapButton.setEnabled(true);
         mTimeLimitedButton.setEnabled(true);
         mCoverageLimitedButton.setEnabled(true);
+        mTestButton.setEnabled(true);
     }
 
     public void disableLoadMapButton() {

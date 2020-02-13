@@ -17,8 +17,8 @@ public class SocketMgr {
     private Socket mSocket;
     private PrintWriter mSocketWriter;
     private BufferedReader mSocketReader;
-    private static final int PORT = 5560;
-    private static final String ADDRESS = "192.168.16.1";
+    private static final int PORT = 9123;
+    private static final String ADDRESS = "192.168.16.16";
 
     private SocketMgr() { }
 
