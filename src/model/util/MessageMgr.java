@@ -53,19 +53,28 @@ public class MessageMgr {
      * @return
      */
     public static List<Integer> parseMessage(String msg) {
-        String[] splitString = msg.split(",", 2);
-        List<Integer> waypoint = new ArrayList<>();
+    	if(msg.contains("waypoint:")) {
+    		String[] splitStringTest = msg.split(":", 2);
+    		msg = splitStringTest[1];
+    		System.out.println(splitStringTest[0]);
+    		System.out.println(splitStringTest[1]);
+    		msg = msg.trim();
+    		String[] splitString = msg.split(", ", 2);
+            List<Integer> waypoint = new ArrayList<>();
 
-        Integer wayPointX, wayPointY;
-        try {
-            wayPointX = Integer.parseInt(splitString[0]);
-            wayPointY = MAP_ROWS - Integer.parseInt(splitString[1]) - 1;
-            waypoint.add(wayPointX);
-            waypoint.add(wayPointY);
-            return waypoint;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+            Integer wayPointX, wayPointY;
+            try {
+                wayPointX = Integer.parseInt(splitString[0]);
+                wayPointY = MAP_ROWS - Integer.parseInt(splitString[1]) - 1;
+                waypoint.add(wayPointX);
+                waypoint.add(wayPointY);
+                return waypoint;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+    	}
+    	return null;
+        
     }
 }

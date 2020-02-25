@@ -21,12 +21,12 @@ public class AppRunner {
             // models
             Grid grid = new Grid();
             //setObstaclesMap(grid);
-            Sensor sensor1 = new Sensor(2, 0, 0, LEFT, 3);
-            Sensor sensor2 = new Sensor(2, 0, 2, LEFT, 3);
-            Sensor sensor3 = new Sensor(2, 0, 0, MIDDLE, 5);
-            Sensor sensor4 = new Sensor(2, 2, 0, MIDDLE, 5);
-            Sensor sensor5 = new Sensor(2, 1, 0, MIDDLE, 3);
-            Sensor sensor6 = new Sensor(6, 1, 0, RIGHT, 1);
+            Sensor sensor1 = new Sensor(2, 0, 0, MIDDLE, 3);
+            Sensor sensor2 = new Sensor(2, 1, 0, MIDDLE, 3);
+            Sensor sensor3 = new Sensor(2, 2, 0, MIDDLE, 5);
+            Sensor sensor4 = new Sensor(2, 0, 0, LEFT, 5);
+            Sensor sensor5 = new Sensor(2, 0, 2, LEFT, 3);
+            Sensor sensor6 = new Sensor(6, 2, 0, RIGHT, 1);
             List<Sensor> sensors = new ArrayList<>();
             sensors.add(sensor1);
             sensors.add(sensor2);
@@ -48,6 +48,7 @@ public class AppRunner {
             new RealRunButtonListener(simulator, grid, robot);
             new RealRunCheckBoxListener(simulator);
             new TestButtonListener(simulator, grid, robot);
+            new MapDescriptorButtonListener(simulator, grid, robot);
 
             simulator.setVisible(true);
             System.out.println("Simulator started.");

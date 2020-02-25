@@ -327,13 +327,13 @@ public class Robot extends Observable {
      */
     public void sense(boolean realRun) {
         if (realRun) {
-            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
+            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
             String sensorData = SocketMgr.getInstance().receiveMessage(true);
             while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "S");
+                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
                 sensorData = SocketMgr.getInstance().receiveMessage(true);
             }
-            String[] sensorReadings = sensorData.split(",", mSensors.size());
+            String[] sensorReadings = sensorData.split("#", mSensors.size());
             for (int i = 0; i < mSensors.size(); i++) {
                 int returnedDistance = Integer.parseInt(sensorReadings[i]);
                 int heading = mSensors.get(i).getActualHeading();

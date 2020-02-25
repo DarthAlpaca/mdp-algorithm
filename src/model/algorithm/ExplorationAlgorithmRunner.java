@@ -115,7 +115,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
             // MOVE FORWARD
             if (realRun)
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M1");
+                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
             robot.move();
             stepTaken();
 
@@ -198,7 +198,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
             // MOVE FORWARD
             if (realRun)
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M1");
+                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
             robot.move();
             stepTaken();
 
@@ -333,7 +333,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
                             // MOVE FORWARD
                             if (realRun)
-                                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M1");
+                                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
                             robot.move();
                             stepTaken();
 
@@ -395,7 +395,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
                                 // MOVE FORWARD
                                 if (realRun)
-                                    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M1");
+                                    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
                                 robot.move();
                                 stepTaken();
 
@@ -537,7 +537,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 stepTaken();
                 if (action.equals("M")) {
                     if (realRun)
-                        SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M1");
+                        SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
                     robot.move();
                 } else if (action.equals("L")) {
                     if (realRun)

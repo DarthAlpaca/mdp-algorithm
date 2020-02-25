@@ -5,11 +5,13 @@ import model.util.MessageMgr;
 import model.util.SocketMgr;
 
 import static constant.CommConstants.TARGET_ANDROID;
-import static constant.CommConstants.TARGET_ARDUINO;
+
+import static constant.CommConstants.TARGET_ANDROID;
+import static constant.CommConstants.TARGET_BOTH;
 
 public class CommTester {
 	public boolean test_general() {
-		return testConnection()&&testSendingMessage(TARGET_ARDUINO,"M")&&testSendingMessage(TARGET_ANDROID, "test")&&testReceivingMessage("");
+		return testConnection()&&testSendingMessage(TARGET_BOTH,"HI");
 	}
 	public boolean testConnection() {
 		if (!SocketMgr.getInstance().isConnected()) {
