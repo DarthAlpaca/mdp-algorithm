@@ -20,6 +20,8 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
     private int sleepDuration;
     private int mWayPointX = -1;
     private int mWayPointY = -1;
+    private int timePenalty = 10;
+    // if not going through WayPoint, penalty is 10s
 
     private static final int START_X = 0;
     private static final int START_Y = 17;
@@ -49,7 +51,8 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
         }
 
         // receive waypoint
-        int wayPointX = mWayPointX, wayPointY = mWayPointY;
+        int wayPointX = mWayPointX;
+        int wayPointY = mWayPointY;
         //if (realRun && wayPointX == -1 && wayPointY == -1) {
         //    // receive from Android
         //    System.out.println("Waiting for waypoint");
@@ -74,53 +77,161 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
         Robot fakeRobot = new Robot(new Grid(), new ArrayList<>());
         List<String> path1 = AlgorithmRunner.runAstar(START_X, START_Y, wayPointX, wayPointY, grid, fakeRobot);
         List<String> path2 = AlgorithmRunner.runAstar(wayPointX, wayPointY, GOAL_X, GOAL_Y, grid, fakeRobot);
+        List<String> pathWithoutWayPoint = AlgorithmRunner.runAstar(START_X, START_Y, GOAL_X, GOAL_Y, grid, fakeRobot);
 
-        if (path1 != null && path2 != null) {
-            System.out.println("Algorithm finished, executing actions");
-            path1.addAll(path2);
-            System.out.println(path1.toString());
-            if (realRun) {
-                //// INITIAL CALIBRATION
-                //if (realRun) {
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
-                //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-                //}
-                // SEND ENTIRE PATH AT ONCE
-                String compressedPath = AlgorithmRunner.compressPath(path1);
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
-                // SIMULATE AT THE SAME TIME
-                for (String action : path1) {
-                    if (action.equals("M")) {
-                        robot.move();
-                    } else if (action.equals("L")) {
-                        robot.turn(LEFT);
-                    } else if (action.equals("R")) {
-                        robot.turn(RIGHT);
-                    } else if (action.equals("U")) {
-                        robot.turn(LEFT);
-                        robot.turn(LEFT);
+        int distanceWithWayPoint = AlgorithmRunner.estimateDistanceToGoal(START_X, START_Y, wayPointX, wayPointY) + AlgorithmRunner.estimateDistanceToGoal(wayPointX, wayPointY, GOAL_X, GOAL_Y);
+        int distanceWithoutWayPoint = AlgorithmRunner.estimateDistanceToGoal(START_X, START_Y, GOAL_X, GOAL_Y) + 15/6 * timePenalty;
+        System.out.println("distanceWithWayPoint" + distanceWithWayPoint);
+        System.out.println("distanceWithoutWayPoint" + distanceWithoutWayPoint);
+
+        if (distanceWithWayPoint <= distanceWithoutWayPoint){
+            System.out.println("Algorithm with WayPoint");
+            if (path1 != null && path2 != null) {
+                System.out.println("Algorithm finished, executing actions");
+                path1.addAll(path2);
+                System.out.println(path1.toString());
+                if (realRun) {
+                    //// INITIAL CALIBRATION
+                    //if (realRun) {
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                    //}
+                    // SEND ENTIRE PATH AT ONCE
+                    String compressedPath = AlgorithmRunner.compressPath(path1);
+                    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
+                    // SIMULATE AT THE SAME TIME
+                    for (String action : path1) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("U")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+                        takeStep();
                     }
-                    takeStep();
+                } else {
+                    for (String action : path1) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("U")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+                        takeStep();
+                    }
                 }
             } else {
-                for (String action : path1) {
-                    if (action.equals("M")) {
-                        robot.move();
-                    } else if (action.equals("L")) {
-                        robot.turn(LEFT);
-                    } else if (action.equals("R")) {
-                        robot.turn(RIGHT);
-                    } else if (action.equals("U")) {
-                        robot.turn(LEFT);
-                        robot.turn(LEFT);
-                    }
-                    takeStep();
-                }
+                System.out.println("Fastest path not found!");
             }
-        } else {
-            System.out.println("Fastest path not found!");
+        }
+        else if (distanceWithWayPoint > distanceWithoutWayPoint) {
+            System.out.println("Algorithm without WayPoint");
+            if (pathWithoutWayPoint != null) {
+                System.out.println("Algorithm finished, executing actions");
+                System.out.println(pathWithoutWayPoint.toString());
+                if (realRun) {
+                    //// INITIAL CALIBRATION
+                    //if (realRun) {
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                    //}
+                    // SEND ENTIRE PATH AT ONCE
+                    String compressedPath = AlgorithmRunner.compressPath(pathWithoutWayPoint);
+                    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
+                    // SIMULATE AT THE SAME TIME
+                    for (String action : pathWithoutWayPoint) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("U")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+                        takeStep();
+                    }
+                } else {
+                    for (String action : pathWithoutWayPoint) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("U")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+                        takeStep();
+                    }
+                }
+            } else {
+                System.out.println("Fastest path not found!");
+            }
+        }
+        else{
+            System.out.println("Algorithm WayPoint else condition");
+            if (path1 != null && path2 != null) {
+                System.out.println("Algorithm finished, executing actions");
+                path1.addAll(path2);
+                System.out.println(path1.toString());
+                if (realRun) {
+                    //// INITIAL CALIBRATION
+                    //if (realRun) {
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
+                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+                    //}
+                    // SEND ENTIRE PATH AT ONCE
+                    String compressedPath = AlgorithmRunner.compressPath(path1);
+                    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
+                    // SIMULATE AT THE SAME TIME
+                    for (String action : path1) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("U")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+                        takeStep();
+                    }
+                } else {
+                    for (String action : path1) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("U")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+                        takeStep();
+                    }
+                }
+            } else {
+                System.out.println("Fastest path not found!");
+            }
         }
     }
 
