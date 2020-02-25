@@ -117,11 +117,11 @@ public class Simulator extends JFrame {
     public void addTestButtonListener(ActionListener actionListener) {
     	mTestButton.addActionListener(actionListener);
     }
-    
+
     public void addMapDescriptorButtonListener(ActionListener actionListener) {
     	mMapDescriptorButton.addActionListener(actionListener);
     }
-
+    
     public void disableButtons() {
         mExplorationButton.setEnabled(false);
         mFastestPathButton.setEnabled(false);
