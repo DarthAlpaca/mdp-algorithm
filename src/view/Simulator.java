@@ -26,6 +26,7 @@ public class Simulator extends JFrame {
     private JCheckBox mRealRunCheckBox;
     private JFormattedTextField mRobotSpeedField;
     private JButton mTestButton;
+    private JButton mMapDescriptorButton;
 
     // model
     private Grid mSimulationGrid;
@@ -51,6 +52,7 @@ public class Simulator extends JFrame {
         mRobotSpeedField = new JFormattedTextField(NumberFormat.getIntegerInstance());
         mRobotSpeedField.setPreferredSize(new Dimension(50, mRobotSpeedField.getHeight()));
         mTestButton = new JButton("Test");
+        mMapDescriptorButton = new JButton("generate MD");
 
         // set up as observer
         mSimulationRobot.addObserver((Observer) mMapPanel);
@@ -73,6 +75,7 @@ public class Simulator extends JFrame {
         bottomPanel.add(mCoverageLimitedButton);
         bottomPanel.add(mLoadMapButton);
         bottomPanel.add(mTestButton);
+        bottomPanel.add(mMapDescriptorButton);
         this.add(bottomPanel, BorderLayout.PAGE_END);
 
         // set up the frame
@@ -114,8 +117,11 @@ public class Simulator extends JFrame {
     public void addTestButtonListener(ActionListener actionListener) {
     	mTestButton.addActionListener(actionListener);
     }
-    
 
+    public void addMapDescriptorButtonListener(ActionListener actionListener) {
+    	mMapDescriptorButton.addActionListener(actionListener);
+    }
+    
     public void disableButtons() {
         mExplorationButton.setEnabled(false);
         mFastestPathButton.setEnabled(false);
@@ -123,6 +129,7 @@ public class Simulator extends JFrame {
         mTimeLimitedButton.setEnabled(false);
         mCoverageLimitedButton.setEnabled(false);
         mTestButton.setEnabled(false);
+        mMapDescriptorButton.setEnabled(false);
     }
 
     public void enableButtons() {
@@ -132,6 +139,7 @@ public class Simulator extends JFrame {
         mTimeLimitedButton.setEnabled(true);
         mCoverageLimitedButton.setEnabled(true);
         mTestButton.setEnabled(true);
+        mMapDescriptorButton.setEnabled(true);
     }
 
     public void disableLoadMapButton() {

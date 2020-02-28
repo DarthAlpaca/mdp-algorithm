@@ -51,6 +51,7 @@ public class RealRunButtonListener implements ActionListener {
             List<Integer> waypoints;
             while ((waypoints = MessageMgr.parseMessage(msg)) == null) {
                 msg = SocketMgr.getInstance().receiveMessage(false);
+                System.out.println("wating for waypoint");
             }
 
             // do exploration

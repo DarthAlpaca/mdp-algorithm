@@ -69,10 +69,14 @@ public class SocketMgr {
             else
                 mSocket.setSoTimeout(0);
         } catch (SocketException e) {
-
+        	e.printStackTrace();
         }
         try {
-            String msg = mSocketReader.readLine();
+        	char[] m;
+        	m = new char[100];
+        	String msg;
+        	mSocketReader.read(m,0,100);
+        	msg = new String(m);
             System.out.println("Received message: " + msg);
             return msg;
         } catch (SocketTimeoutException e) {

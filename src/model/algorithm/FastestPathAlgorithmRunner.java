@@ -183,56 +183,6 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
                 System.out.println("Fastest path not found!");
             }
         }
-        else{
-            System.out.println("Algorithm WayPoint else condition");
-            if (path1 != null && path2 != null) {
-                System.out.println("Algorithm finished, executing actions");
-                path1.addAll(path2);
-                System.out.println(path1.toString());
-                if (realRun) {
-                    //// INITIAL CALIBRATION
-                    //if (realRun) {
-                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
-                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
-                    //    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-                    //}
-                    // SEND ENTIRE PATH AT ONCE
-                    String compressedPath = AlgorithmRunner.compressPath(path1);
-                    SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, compressedPath);
-                    // SIMULATE AT THE SAME TIME
-                    for (String action : path1) {
-                        if (action.equals("M")) {
-                            robot.move();
-                        } else if (action.equals("L")) {
-                            robot.turn(LEFT);
-                        } else if (action.equals("R")) {
-                            robot.turn(RIGHT);
-                        } else if (action.equals("U")) {
-                            robot.turn(LEFT);
-                            robot.turn(LEFT);
-                        }
-                        takeStep();
-                    }
-                } else {
-                    for (String action : path1) {
-                        if (action.equals("M")) {
-                            robot.move();
-                        } else if (action.equals("L")) {
-                            robot.turn(LEFT);
-                        } else if (action.equals("R")) {
-                            robot.turn(RIGHT);
-                        } else if (action.equals("U")) {
-                            robot.turn(LEFT);
-                            robot.turn(LEFT);
-                        }
-                        takeStep();
-                    }
-                }
-            } else {
-                System.out.println("Fastest path not found!");
-            }
-        }
     }
 
     /**
