@@ -1,6 +1,7 @@
 package controller;
 
 import model.algorithm.AlgorithmRunner;
+
 import model.algorithm.ExplorationAlgorithmRunner;
 import model.algorithm.FastestPathAlgorithmRunner;
 import model.entity.Grid;
@@ -12,7 +13,7 @@ import view.Simulator;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by koallen on 11/10/17.
@@ -47,12 +48,13 @@ public class RealRunButtonListener implements ActionListener {
         @Override
         protected Integer doInBackground() throws Exception {
             // receive way point
-            String msg = SocketMgr.getInstance().receiveMessage(false);
-            List<Integer> waypoints;
-            while ((waypoints = MessageMgr.parseMessage(msg)) == null) {
-                msg = SocketMgr.getInstance().receiveMessage(false);
-                System.out.println("wating for waypoint");
-            }
+//            String msg = SocketMgr.getInstance().receiveMessage(false);
+            List<Integer> waypoints = Arrays.asList(5,5);
+//            List<Integer> waypoints;
+//            while ((waypoints = MessageMgr.parseMessage(msg)) == null) {
+//                msg = SocketMgr.getInstance().receiveMessage(false);
+//                System.out.println("wating for waypoint");
+//            }
 
             // do exploration
             AlgorithmRunner explorationRunner = new ExplorationAlgorithmRunner(mView.getRobotSpeed());

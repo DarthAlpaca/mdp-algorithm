@@ -65,18 +65,19 @@ public class SocketMgr {
     public String receiveMessage(boolean sensor) {
         try {
             if (sensor)
-                mSocket.setSoTimeout(3000);
+                mSocket.setSoTimeout(5000);
             else
                 mSocket.setSoTimeout(0);
         } catch (SocketException e) {
         	e.printStackTrace();
         }
         try {
-        	char[] m;
-        	m = new char[100];
+//        	char[] m;
+//        	m = new char[100];
         	String msg;
-        	mSocketReader.read(m,0,100);
-        	msg = new String(m);
+//        	mSocketReader.read(m,0,100);
+//        	msg = new String(m);
+        	msg = mSocketReader.readLine();
             System.out.println("Received message: " + msg);
             return msg;
         } catch (SocketTimeoutException e) {

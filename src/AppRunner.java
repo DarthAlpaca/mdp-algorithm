@@ -21,12 +21,14 @@ public class AppRunner {
             // models
             Grid grid = new Grid();
             //setObstaclesMap(grid);
-            Sensor sensor1 = new Sensor(2, 0, 0, MIDDLE, 3);
-            Sensor sensor2 = new Sensor(2, 1, 0, MIDDLE, 3);
-            Sensor sensor3 = new Sensor(2, 2, 0, MIDDLE, 5);
-            Sensor sensor4 = new Sensor(2, 0, 0, LEFT, 5);
-            Sensor sensor5 = new Sensor(2, 0, 2, LEFT, 3);
-            Sensor sensor6 = new Sensor(6, 2, 0, RIGHT, 1);
+            //long range 15 to 60
+            //short range 5 to 35
+            Sensor sensor1 = new Sensor(3, 3, 0, MIDDLE, 5);
+            Sensor sensor2 = new Sensor(5, 2, 0, MIDDLE, 5);
+            Sensor sensor3 = new Sensor(3, 1, 0, MIDDLE, 5); 
+            Sensor sensor4 = new Sensor(3, 0, 2, LEFT, 5);
+            Sensor sensor5 = new Sensor(3, 0, 1, LEFT, 5);
+            Sensor sensor6 = new Sensor(5, 2, 2, RIGHT, 5);
             List<Sensor> sensors = new ArrayList<>();
             sensors.add(sensor1);
             sensors.add(sensor2);
