@@ -8,6 +8,14 @@ import model.util.SocketMgr;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.sql.Timestamp;
+import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import static constant.CommConstants.TARGET_ANDROID;
 import static constant.CommConstants.TARGET_ARDUINO;
 import static constant.MapConstants.MAP_COLS;
@@ -18,6 +26,12 @@ import static constant.RobotConstants.*;
  * Algorithm for exploration phase (full exploration)
  */
 public class ExplorationAlgorithmRunner implements AlgorithmRunner {
+
+    long startTime = System.currentTimeMillis();
+    HashMap<Long, List<Integer>> TimeStampForEachCellHashMap = new HashMap<Long, List<Integer>>();
+    List<Integer> CurrentCoordinates = new ArrayList<Integer>();
+    List<Integer> CopiedCurrentCoordinates = new ArrayList<Integer>();
+    List<Long> ListOfElapsedTime = new ArrayList<Long>();
 
     private int sleepDuration;
     private static final int START_X = 0;
@@ -63,7 +77,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
         }
     }
-
+    
     private void runExplorationLeftWall(Grid grid, Robot robot, boolean realRun){
         boolean endZoneFlag = false;
         boolean startZoneFlag = false;
@@ -85,7 +99,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         while (!endZoneFlag || !startZoneFlag) {
             // CHECK IF TURNING IS NECESSARY
             boolean turned = leftWallFollower(robot, grid, realRun);
-
+            
             if (turned) {
                 // CALIBRATION
                 if (realRun) {
@@ -192,6 +206,16 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                     }
                 }
 
+                // RECORD THE CURRENT TIME STAMP
+                long endTime = System.currentTimeMillis();
+                long timeElapsed = endTime - startTime;
+                ListOfElapsedTime.add(timeElapsed);
+                CurrentCoordinates.add(robot.getCenterPosX());
+                CurrentCoordinates.add(20 - robot.getCenterPosY());
+                List<Integer> CopiedCurrentCoordinates = new ArrayList<Integer>(CurrentCoordinates); 
+                TimeStampForEachCellHashMap.put(timeElapsed, CopiedCurrentCoordinates);
+                CurrentCoordinates.clear();
+                    
                 // SENSE AFTER CALIBRATION
                 senseAndUpdateAndroid(robot, grid, realRun);
             }
@@ -200,6 +224,18 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             if (realRun)
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
             robot.move();
+
+            // RECORD THE CURRENT TIME STAMP
+            long endTime = System.currentTimeMillis();
+            long timeElapsed = endTime - startTime;
+            ListOfElapsedTime.add(timeElapsed);
+            CurrentCoordinates.add(robot.getCenterPosX());
+            CurrentCoordinates.add(20 - robot.getCenterPosY());
+            List<Integer> CopiedCurrentCoordinates = new ArrayList<Integer>(CurrentCoordinates); 
+            TimeStampForEachCellHashMap.put(timeElapsed, CopiedCurrentCoordinates);
+            CurrentCoordinates.clear();
+            
+            
             stepTaken();
 
             // CALIBRATION
@@ -469,6 +505,17 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         }
         System.out.println("EXPLORATION COMPLETED!");
         System.out.println("PERCENTAGE OF AREA EXPLORED: " + grid.checkExploredPercentage() + "%!");
+        System.out.println("Execution ends");
+        System.out.println("Start Receiving from RPi");
+        //MessageMgr.ReceivingImageDataJson();
+        
+        System.out.println(TimeStampForEachCellHashMap);
+        //System.out.println("Start Sending HashMap to RPi");
+        //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
+        //System.out.println("Successfully Sending to HashMap to RPi");
+        //MessageMgr.sendingListPOST(ListOfElapsedTime);
+        //MatchImageDataFromTimeStamp(MessageMgr.ReceivingImageDataJson(), TimeStampForEachCellHashMap);
+
     }
 
     /**
