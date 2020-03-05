@@ -307,13 +307,13 @@ public class Robot extends Observable {
             // if this cell is an obstacle
             if (i == distance && obstacleAhead) {
                 if (realRun) {
-                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, reliability); // increment by reliability
+                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, reliability*(distance-i+1)*2); // increment by reliability
                 } else {
                     mGrid.setIsObstacle(xToUpdate, yToUpdate, true);
                 }
             } else { // if this cell is not an obstacle
                 if (realRun) {
-                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, -reliability); // decrement by reliability
+                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, -reliability*(distance-i+1)*2); // decrement by reliability
                 } else {
                     mGrid.setIsObstacle(xToUpdate, yToUpdate, false);
                 }
@@ -325,23 +325,31 @@ public class Robot extends Observable {
      * Sense the robot's surrounding environment
      * @param realRun whether it's the physical robot
      */
-    public void sense(boolean realRun) {
+    public void sense(boolean realRun, String command) {
         if (realRun) {
-            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
             String sensorData = SocketMgr.getInstance().receiveMessage(true);
+            int timeOutCount = 0;
             while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+            	timeOutCount += 1;
+            	if(timeOutCount>=2) {
+            		SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, command);
+            		timeOutCount = 0;
+            	}
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
                 sensorData = SocketMgr.getInstance().receiveMessage(true);
             }
             System.out.println(sensorData);
             String[] sensorReadings = sensorData.split("#", mSensors.size());
             for (int i = 0; i < mSensors.size(); i++) {
-                int returnedDistance = (int)Math.round(Double.parseDouble(sensorReadings[i])/10.0);
-                System.out.println(returnedDistance);
+                int returnedDistance = Integer.parseInt(sensorReadings[i]); 
                 int heading = mSensors.get(i).getActualHeading();
                 int range = mSensors.get(i).getRange();
                 int x = mSensors.get(i).getActualPosX();
                 int y = mSensors.get(i).getActualPosY();
+                if(i==5) {
+                	if(returnedDistance<=2)continue;
+                }
                 updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
             }
         } else {

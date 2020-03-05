@@ -34,6 +34,7 @@ public interface AlgorithmRunner {
      */
     static List<String> runAstar(int startX, int startY, int endX, int endY, Grid grid, Robot robot) {
         // initialization
+    	System.out.println("startX: "+Integer.toString(startX)+",startY: "+Integer.toString(startY)+",endX: "+Integer.toString(endX)+",endY: "+Integer.toString(endY));
         boolean[][] closedSet;
         List<Cell> openSet;
         HashMap<Cell, Cell> cameFrom;
@@ -162,7 +163,7 @@ public interface AlgorithmRunner {
                     actions.add("L");
                     robot.turn(LEFT);
                 } else {
-                    actions.add("U");
+                    actions.add("T");
                     robot.turn(LEFT);
                     robot.turn(LEFT);
                 }
@@ -283,7 +284,7 @@ public interface AlgorithmRunner {
                 fakeRobot.turn(LEFT);
             } else if (action.equals("R")) {
                 fakeRobot.turn(RIGHT);
-            } else if (action.equals("U")) {
+            } else if (action.equals("T")) {
                 fakeRobot.turn(LEFT);
                 fakeRobot.turn(LEFT);
             } else if (action.equals("M")) {

@@ -28,9 +28,10 @@ public class MapDescriptorButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
         System.out.println("Generate Map Descriptor button pressed");
-        String msg = MessageMgr.generateMapDescriptorMsg(mGrid.generateForAndroid(), mRobot.getCenterPosX(), mRobot.getCenterPosY(), mRobot.getHeading());
-        System.out.println(msg);
-        JOptionPane.showMessageDialog(null, msg, "MDF", JOptionPane.INFORMATION_MESSAGE);
+        String m = MessageMgr.generateFinalDescriptor(mGrid.generateDescriptorPartOne(), mGrid.generateDescriptorPartTwo());
+//        String msg = MessageMgr.generateMapDescriptorMsg(mGrid.generateForAndroid(), mRobot.getCenterPosX(), mRobot.getCenterPosY(), mRobot.getHeading());
+        System.out.println(m);
+        JOptionPane.showMessageDialog(null, m, "MDF", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }
