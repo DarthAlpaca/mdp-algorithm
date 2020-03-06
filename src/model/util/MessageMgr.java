@@ -10,11 +10,14 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import static constant.MapConstants.MAP_ROWS;
 import static constant.RobotConstants.*;
+import static constant.CommConstants.*;
 
 
 
@@ -155,36 +158,48 @@ public class MessageMgr {
         }
     }
 
-    public static void MatchImageDataFromTimeStamp(HashMap<Integer, List<List<Integer>>> ImageHashMapReceivedFromRPi, HashMap<Long, List<Integer>> TimeStampDatabase){
+    public static void MatchImageDataFromTimeStamp(String datafromRPi, HashMap<Long, List<Integer>> TimeStampDatabase){
+        List<List<Integer>> XYcoordinates = new ArrayList<List<Integer>>();
+        String[] ListOfIndexfromRPi = new String[50];
+        String[] ListOfKeysfromRPi = new String[50];
+        
+        // get a list of keys
+        // Testing String inputfromRPi ="data = [303: [1]], [400: [[1],[2]]]";
+        System.out.println(datafromRPi.getClass().getName());
+        String coloniedData = datafromRPi.replaceAll("\\s+", "").replaceAll("\\[","").replaceAll("\\=","").replaceAll("\\)","").replaceAll("data","");
+        String[] coloniedPairs = coloniedData.split("]],");
+        for (int i=0;i<coloniedPairs.length;i++) {
+            String coloniedPair = coloniedPairs[i];
+            String[] keyValue = coloniedPair.split(":");
+            ListOfKeysfromRPi[i] = keyValue[0].replaceAll("\\,", "").replaceAll("\\s+", "");
+            ListOfIndexfromRPi[i] = keyValue[1].replaceAll("\\,", "").replaceAll("\\s+", "").replaceAll("\\]]]", "").replaceAll("\\]", ",");
+        }
+/*        
+        int u=0;
+        while (ListOfIndexfromRPi[u] != null){
+            System.out.println("ListOfKeysfromRPi: " + ListOfKeysfromRPi[u]);
+            System.out.println("ListOfIndexfromRPi: " + ListOfIndexfromRPi[u]);
+            System.out.println("Length: " + ListOfIndexfromRPi[u].length());
+            u++;
+        }
+*/
 
-        for(HashMap.Entry<Integer, List<List<Integer>>> inDataentry : ImageHashMapReceivedFromRPi.entrySet()) {
-            Integer inDataKey = inDataentry.getKey();
-            List<List<Integer>> inDataValue = inDataentry.getValue();
-
-            for (HashMap.Entry<Long, List<Integer>> entry : TimeStampDatabase.entrySet()){
-                Long databaseKey = entry.getKey();
-                List<Integer> databaseValue = entry.getValue();
-
-                if (Math.abs(inDataKey - databaseKey) < 200){
-
-                    System.out.println(databaseValue);
-
-                    int x_axis_from_database = databaseValue.get(0);
-                    int y_axis_from_database = databaseValue.get(1);
-                    for (int k=0;k<inDataValue.size();k++){
-                        int index_from_received_data = inDataValue.get(k).get(0);
-                        int x_axis_from_received_data = inDataValue.get(k).get(1);
-                        int y_axis_from_received_data = inDataValue.get(k).get(2);
-                        int weight_from_received_data = inDataValue.get(k).get(3);
-                        int height_from_received_data = inDataValue.get(k).get(4);
+        // compare 
+        String resultToAndroid;
+        for (HashMap.Entry<Long, List<Integer>> entry : TimeStampDatabase.entrySet()){
+            Long databaseKey = entry.getKey();
+            List<Integer> databaseValue = entry.getValue();
+            for (int counter=0; counter< ListOfKeysfromRPi.length; counter++){
+                if (ListOfKeysfromRPi[counter] != null){
+                    if (Math.abs(Long.parseLong(ListOfKeysfromRPi[counter]) - databaseKey) < 10){
+                        XYcoordinates.add(databaseValue);
+                        resultToAndroid = "Index: [" + ListOfIndexfromRPi[counter] + "] XYCoordinates: " + XYcoordinates;
+                        System.out.println(resultToAndroid);
+                        SocketMgr.getInstance().sendMessage(TARGET_ANDROID, resultToAndroid);
                     }
-                }
-                
-    
+                }       
             }
         }
     }
-
-
-    }
+}
 

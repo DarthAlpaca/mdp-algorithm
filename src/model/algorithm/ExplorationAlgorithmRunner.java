@@ -507,14 +507,12 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         System.out.println("PERCENTAGE OF AREA EXPLORED: " + grid.checkExploredPercentage() + "%!");
         System.out.println("Execution ends");
         System.out.println("Start Receiving from RPi");
-        //MessageMgr.ReceivingImageDataJson();
         
-        System.out.println(TimeStampForEachCellHashMap);
-        //System.out.println("Start Sending HashMap to RPi");
-        //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
-        //System.out.println("Successfully Sending to HashMap to RPi");
-        //MessageMgr.sendingListPOST(ListOfElapsedTime);
-        //MatchImageDataFromTimeStamp(MessageMgr.ReceivingImageDataJson(), TimeStampForEachCellHashMap);
+        // for testing of message parsing
+        String datafromRPi = MessageMgr.ReceivingImageDataJson();
+        //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
+
+        MessageMgr.MatchImageDataFromTimeStamp(datafromRPi, TimeStampForEachCellHashMap);
 
     }
 
