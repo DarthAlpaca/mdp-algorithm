@@ -39,10 +39,10 @@ public class TestButtonListener implements ActionListener {
 		
 		if(choice==0) {
 			System.out.println("general test");
-//			result = tester.test_general();
-			mRobot.setPosX(2);
-			mRobot.setPosY(16);
-			result = tester.test_astar(mRobot.getPosX(),mRobot.getPosY(),0,17,mGrid, mRobot);
+			result = tester.test_general();
+//			mRobot.setPosX(2);
+//			mRobot.setPosY(16);
+//			result = tester.test_astar(mRobot.getPosX(),mRobot.getPosY(),0,17,mGrid, mRobot);
 		}
 		else if(choice == 1) {
 			System.out.println("test connection");

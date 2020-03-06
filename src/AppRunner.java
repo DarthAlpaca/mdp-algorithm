@@ -28,7 +28,7 @@ public class AppRunner {
             Sensor sensor3 = new Sensor(3, 0, 0, MIDDLE, 2); 
             Sensor sensor4 = new Sensor(3,  0, 0, LEFT, 2);
             Sensor sensor5 = new Sensor(3, 0, 2, LEFT, 2);
-            Sensor sensor6 = new Sensor(5, 2, 1, RIGHT, 1);
+            Sensor sensor6 = new Sensor(6, 2, 1, RIGHT, 1);
             List<Sensor> sensors = new ArrayList<>();
             sensors.add(sensor1);
             sensors.add(sensor2);

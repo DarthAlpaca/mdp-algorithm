@@ -18,6 +18,7 @@ public class Robot extends Observable {
     private int mHeading = NORTH;
     private Grid mGrid;
     private List<Sensor> mSensors;
+    private String sensorV;
 
     public Robot(Grid grid, List<Sensor> sensors) {
         mGrid = grid;
@@ -307,13 +308,15 @@ public class Robot extends Observable {
             // if this cell is an obstacle
             if (i == distance && obstacleAhead) {
                 if (realRun) {
-                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, reliability*(distance-i+1)*2); // increment by reliability
+                	System.out.println("reliability:"+Integer.toString(reliability*(range-i+1)));
+                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, reliability); // increment by reliability
                 } else {
                     mGrid.setIsObstacle(xToUpdate, yToUpdate, true);
                 }
             } else { // if this cell is not an obstacle
                 if (realRun) {
-                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, -reliability*(distance-i+1)*2); // decrement by reliability
+                	System.out.println("reliability:"+Integer.toString(reliability*(range-i+1)));
+                    mGrid.setObstacleProbability(xToUpdate, yToUpdate, -reliability); // decrement by reliability
                 } else {
                     mGrid.setIsObstacle(xToUpdate, yToUpdate, false);
                 }
@@ -325,33 +328,47 @@ public class Robot extends Observable {
      * Sense the robot's surrounding environment
      * @param realRun whether it's the physical robot
      */
-    public void sense(boolean realRun, String command) {
+    public boolean sense(boolean realRun, String command) {
         if (realRun) {
 //            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-            String sensorData = SocketMgr.getInstance().receiveMessage(true);
+        	String sensorData;
+        	if(command.compareTo("W")==0) {
+        		sensorData = sensorV;
+        	}
+        	else { 
+        		sensorData = SocketMgr.getInstance().receiveMessage(true);
+        	}
             int timeOutCount = 0;
             while (sensorData == null) {
             	timeOutCount += 1;
             	if(timeOutCount>=2) {
-            		SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, command);
+//            		SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
             		timeOutCount = 0;
             	}
 //                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
                 sensorData = SocketMgr.getInstance().receiveMessage(true);
             }
             System.out.println(sensorData);
-            String[] sensorReadings = sensorData.split("#", mSensors.size());
+            sensorV = sensorData;
+            String[] sensorReadings = sensorData.split("#", mSensors.size()+1);
+            System.out.println("sensor reading length:");
+            System.out.println(sensorReadings.length);
+            
             for (int i = 0; i < mSensors.size(); i++) {
+//            	System.out.println("index: "+Integer.toString(i));
                 int returnedDistance = Integer.parseInt(sensorReadings[i]); 
                 int heading = mSensors.get(i).getActualHeading();
                 int range = mSensors.get(i).getRange();
                 int x = mSensors.get(i).getActualPosX();
                 int y = mSensors.get(i).getActualPosY();
                 if(i==5) {
-                	if(returnedDistance<=2)continue;
+                	if(returnedDistance<2)continue;
                 }
-                updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
+                if(command.compareTo("M")!=0) {
+                	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
+                }
             }
+            return sensorReadings[6].compareTo("1")==0;
         } else {
             for (Sensor sensor : mSensors) {
                 int returnedDistance = sensor.sense(mGrid);
@@ -361,6 +378,7 @@ public class Robot extends Observable {
                 int y = sensor.getActualPosY();
                 updateMap(returnedDistance, heading, range, x, y, false, sensor.getReliability());
             }
+            return true;
         }
     }
 }

@@ -51,7 +51,7 @@ public class Grid extends Observable {
             return;
         cells[x][y].setIsObstacle(isObstacle);
         setChanged();
-//        notifyObservers();
+        notifyObservers();
     }
 
     public void setObstacleProbability(int x, int y, int value) {
@@ -66,7 +66,7 @@ public class Grid extends Observable {
             return;
         cells[x][y].setExplored(explored);
         setChanged();
-//        notifyObservers();
+        notifyObservers();
     }
 
     public boolean getIsExplored(int x, int y) {

@@ -103,6 +103,20 @@ public class FastestPathAlgorithmRunner implements AlgorithmRunner {
 //                    String compressedPath = AlgorithmRunner.compressPath(path1);
                 	StringBuilder builder = new StringBuilder();
                 	System.out.println("fastest path:");
+                	int j = path1.size()-1;
+                	while(path1.get(j).compareTo("M")==0) {                		
+                		j--;
+                	}
+                	if(path1.get(j).compareTo("L")==0) {
+//                		path1.add(j,"R");
+                		path1.add(j+1, "M");
+                		path1.add(j-1, "M");
+                	}
+                	else if(path1.get(j).compareTo("R")==0 ) {
+//                		path1.add(j,"L");
+                		path1.add(j+1, "M");
+                		path1.add(j-1, "M");
+                	}
                     for(int i = 0;i< path1.size();i++) {
                     	builder.append(path1.get(i));
                     	System.out.print(path1.get(i)+' ');

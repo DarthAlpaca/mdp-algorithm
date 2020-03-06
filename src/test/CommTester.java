@@ -36,68 +36,81 @@ public class CommTester {
 	public boolean test_general() {
 		
 		try {
-			testSendingMessage(TARGET_BOTH,"M");
-			Thread.sleep(100);
-
-			testSendingMessage(TARGET_BOTH,"R");
-			testSendingMessage(TARGET_BOTH,"I");
-			String sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"R");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"R");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"L");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"L");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"L");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"R");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"L");
-			testSendingMessage(TARGET_BOTH,"L");
-			testSendingMessage(TARGET_BOTH,"I");
-			sensorData = SocketMgr.getInstance().receiveMessage(true);
-            while (sensorData == null) {
-                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-			testSendingMessage(TARGET_BOTH,"M");
-		} catch (InterruptedException e) {
+//			StringBuilder builder =  new StringBuilder();
+//			builder.append("C");
+//			builder.append("R");
+//			for(int i = 0;i<11;i++)builder.append("M");
+//			builder.append("L");
+//			for(int i = 0;i<18;i++) {
+//				builder.append("M");
+//			}builder.append("R");
+//			builder.append("M");
+//			builder.append("M");
+//			System.out.println(builder.toString());
+			testSendingMessage(TARGET_ARDUINO,"MMMMMMRMMMLMMMMMMMMMMMLMMMVVVVVVVVVVVV");
+			
+//			testSendingMessage(TARGET_BOTH,"M");
+//			
+//
+//			testSendingMessage(TARGET_BOTH,"R");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			String sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"R");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"R");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"L");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"L");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"L");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"R");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"L");
+//			testSendingMessage(TARGET_BOTH,"L");
+//			testSendingMessage(TARGET_BOTH,"I");
+//			sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            while (sensorData == null) {
+//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//			testSendingMessage(TARGET_BOTH,"M");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -65,7 +65,7 @@ public class SocketMgr {
     public String receiveMessage(boolean sensor) {
         try {
             if (sensor)
-                mSocket.setSoTimeout(5000);
+                mSocket.setSoTimeout(150);
             else
                 mSocket.setSoTimeout(0);
         } catch (SocketException e) {
@@ -81,7 +81,7 @@ public class SocketMgr {
             System.out.println("Received message: " + msg);
             return msg;
         } catch (SocketTimeoutException e) {
-            System.out.println("Sensor reading timeout!!!");
+//            System.out.println("Sensor reading timeout!!!");
         } catch (IOException e) {
             e.printStackTrace();
         }
