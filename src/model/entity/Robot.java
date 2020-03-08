@@ -16,6 +16,7 @@ public class Robot extends Observable {
     private int mPosX = START_POS_X; // upper left of robot
     private int mPosY = START_POS_Y; // upper left of robot
     private int mHeading = NORTH;
+    private boolean needToCheckRight = false;
     private Grid mGrid;
     private List<Sensor> mSensors;
     private String sensorV;
@@ -59,6 +60,14 @@ public class Robot extends Observable {
 
     public int getHeading() {
         return mHeading;
+    }
+    
+    public boolean getNeedToCheckRight() {
+    	return needToCheckRight;
+    }
+    
+    public void setNeedToCheckRight(boolean need) {
+    	needToCheckRight = need;
     }
 
     public void setHeading(int heading) {
@@ -363,6 +372,8 @@ public class Robot extends Observable {
                 int y = mSensors.get(i).getActualPosY();
                 if(i==5) {
                 	if(returnedDistance<2)continue;
+                	if(returnedDistance>=3&&returnedDistance<=4)
+                		setNeedToCheckRight(true);
                 }
                 if(command.compareTo("M")!=0) {
                 	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());

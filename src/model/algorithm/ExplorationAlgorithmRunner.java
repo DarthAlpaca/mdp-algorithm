@@ -267,6 +267,12 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                 pastMovements.add("M");
                 recordRobotPosition(robot);
+                
+                if(robot.getNeedToCheckRight()) {
+                	checkRight(robot, grid, realRun);
+                }
+                
+                
             }else {
             	System.out.println("have not moved!!!");
             	continue;
@@ -274,7 +280,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             }
 
 
-//            stepTaken();
+            stepTaken();
             
             if(realRun)
             	emergencyAction(grid, robot, realRun);
@@ -724,6 +730,15 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         pastX.add(robot.getCenterPosX());
         pastY.add(robot.getCenterPosY());
     }
+    
+    
+    private void checkRight(Robot robot, Grid grid, boolean realRun) {
+    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+    	senseAndUpdateAndroid(robot, grid, realRun, "R");
+    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "L");
+    	robot.setNeedToCheckRight(false);
+    }
+    
     
     private boolean senseAndUpdateAndroid(Robot robot, Grid grid, boolean realRun, String command) {
         boolean result = robot.sense(realRun, command);
