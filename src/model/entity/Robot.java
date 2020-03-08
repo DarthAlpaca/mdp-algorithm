@@ -339,47 +339,60 @@ public class Robot extends Observable {
      */
     public boolean sense(boolean realRun, String command) {
         if (realRun) {
+        	
+        for (int i = 0; i < mSensors.size(); i++) {
+//         	System.out.println("index: "+Integer.toString(i));
+             int returnedDistance = 9; 
+             int heading = mSensors.get(i).getActualHeading();
+             int range = mSensors.get(i).getRange();
+             int x = mSensors.get(i).getActualPosX();
+             int y = mSensors.get(i).getActualPosY();
+             if(command.compareTo("M")!=0) {
+             	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
+             }
+         }
+        	return true;
 //            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-        	String sensorData;
-        	if(command.compareTo("W")==0) {
-        		sensorData = sensorV;
-        	}
-        	else { 
-        		sensorData = SocketMgr.getInstance().receiveMessage(true);
-        	}
-            int timeOutCount = 0;
-            while (sensorData == null) {
-            	timeOutCount += 1;
-            	if(timeOutCount>=2) {
-//            		SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-            		timeOutCount = 0;
-            	}
-//                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
-                sensorData = SocketMgr.getInstance().receiveMessage(true);
-            }
-            System.out.println(sensorData);
-            sensorV = sensorData;
-            String[] sensorReadings = sensorData.split("#", mSensors.size()+1);
-            System.out.println("sensor reading length:");
-            System.out.println(sensorReadings.length);
-            
-            for (int i = 0; i < mSensors.size(); i++) {
-//            	System.out.println("index: "+Integer.toString(i));
-                int returnedDistance = Integer.parseInt(sensorReadings[i]); 
-                int heading = mSensors.get(i).getActualHeading();
-                int range = mSensors.get(i).getRange();
-                int x = mSensors.get(i).getActualPosX();
-                int y = mSensors.get(i).getActualPosY();
-                if(i==5) {
-                	if(returnedDistance<2)continue;
-                	if(returnedDistance>=3&&returnedDistance<=4)
-                		setNeedToCheckRight(true);
-                }
-                if(command.compareTo("M")!=0) {
-                	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
-                }
-            }
-            return sensorReadings[6].compareTo("1")==0;
+//        	String sensorData;
+//        	if(command.compareTo("W")==0) {
+//        		sensorData = sensorV;
+//        	}
+//        	else { 
+//        		sensorData = SocketMgr.getInstance().receiveMessage(true);
+//        	}
+//            int timeOutCount = 0;
+//            while (sensorData == null) {
+//            	timeOutCount += 1;
+//            	if(timeOutCount>=2) {
+////            		SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//            		timeOutCount = 0;
+//            	}
+////                SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//                sensorData = SocketMgr.getInstance().receiveMessage(true);
+//            }
+//            System.out.println(sensorData);
+//            sensorV = sensorData;
+//            String[] sensorReadings = sensorData.split("#", mSensors.size()+1);
+//            System.out.println("sensor reading length:");
+//            System.out.println(sensorReadings.length);
+//            
+//            for (int i = 0; i < mSensors.size(); i++) {
+////            	System.out.println("index: "+Integer.toString(i));
+//                int returnedDistance = Integer.parseInt(sensorReadings[i]); 
+//                int heading = mSensors.get(i).getActualHeading();
+//                int range = mSensors.get(i).getRange();
+//                int x = mSensors.get(i).getActualPosX();
+//                int y = mSensors.get(i).getActualPosY();
+//                if(i==5) {
+//                	if(returnedDistance<2)continue;
+//                	if(returnedDistance>=3&&returnedDistance<=4)
+//                		setNeedToCheckRight(true);
+//                }
+//                if(command.compareTo("M")!=0) {
+//                	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
+//                }
+//            }
+//            return sensorReadings[6].compareTo("1")==0;
         } else {
             for (Sensor sensor : mSensors) {
                 int returnedDistance = sensor.sense(mGrid);
