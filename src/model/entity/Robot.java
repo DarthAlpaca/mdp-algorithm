@@ -376,6 +376,8 @@ public class Robot extends Observable {
                 		setNeedToCheckRight(true);
                 }
                 if(command.compareTo("M")!=0) {
+                	if(i==5&&returnedDistance>=3&&returnedDistance<=4)
+                		continue;
                 	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
                 }
             }

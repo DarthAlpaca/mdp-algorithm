@@ -734,19 +734,22 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
     
     private void checkRight(Robot robot, Grid grid, boolean realRun) {
     	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+    	robot.turn(RIGHT);
     	senseAndUpdateAndroid(robot, grid, realRun, "R");
     	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "L");
+    	robot.turn(LEFT);
+    	senseAndUpdateAndroid(robot, grid, realRun, "L");
     	robot.setNeedToCheckRight(false);
     }
     
     
     private boolean senseAndUpdateAndroid(Robot robot, Grid grid, boolean realRun, String command) {
         boolean result = robot.sense(realRun, command);
-//        if (realRun) {
-//            SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
-//                    MessageMgr.generateMapDescriptorMsg(grid.generateAllForAndroid(),
-//                            robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
-//        }
+        if (realRun) {
+            SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
+                    MessageMgr.generateMapDescriptorMsg(grid.generateAllForAndroid(),
+                            robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
+        }
         return result;
     }
 }
