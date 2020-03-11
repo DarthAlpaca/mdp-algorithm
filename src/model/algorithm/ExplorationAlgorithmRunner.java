@@ -311,65 +311,65 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 startZoneFlag = true;
             }
 
-            // IF EXPLORATION COMPLETED & HAVE NOT GO BACK TO START, FIND THE FASTEST PATH BACK TO START POINT
-//            if(grid.checkExploredPercentage() == 100 && !startZoneFlag){
-//                Robot fakeRobot = new Robot(grid, new ArrayList<>());
-//                fakeRobot.setPosX(robot.getPosX());
-//                fakeRobot.setPosY(robot.getPosY());
-//                fakeRobot.setHeading(robot.getHeading());
-//                List<String> returnPath = AlgorithmRunner.runAstar(robot.getPosX(), robot.getPosY(), START_X, START_Y, grid, fakeRobot);
-//                System.out.println("return path constructed: ");
-//                if(returnPath == null) {
-//                	System.out.println("unreachable");
-//                	continue;
-//                }
-//                StringBuilder builder = new StringBuilder();
-//                for(int i = 0;i< returnPath.size();i++) {
-//                	builder.append(returnPath.get(i));
-//                	System.out.print(returnPath.get(i)+' ');
-//                }
-//                System.out.println("");
-//                fakeRobot.setPosX(robot.getPosX());
-//                fakeRobot.setPosY(robot.getPosY());
-//                fakeRobot.setHeading(robot.getHeading());
-////                String compressed = AlgorithmRunner.compressPathForExploration(returnPath, fakeRobot);
-////                System.out.println("compressed string path: ");
-////                System.out.println(compressed);
-//
-//                if (returnPath != null) {
-//                    System.out.println("Algorithm finished, executing actions");
-//                    System.out.println(returnPath.toString());
-//                    if (realRun) {
-//                        SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, builder.toString());
-//                    }
-//
-//                    for (String action : returnPath) {
-//                        if (action.equals("M")) {
-//                            robot.move();
-//                        } else if (action.equals("L")) {
-//                            robot.turn(LEFT);
-//                        } else if (action.equals("R")) {
-//                            robot.turn(RIGHT);
-//                        } else if (action.equals("T")) {
-//                            robot.turn(LEFT);
-//                            robot.turn(LEFT);
-//                        }
-////                        robot.sense(realRun);
-//                        if (realRun)
-//                            SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
-//                                    MessageMgr.generateMapDescriptorMsg(grid.generateForAndroid(),
-//                                            robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
-//                        stepTaken();
-//                    }
-//                } else {
-//                    System.out.println("Fastest path not found!");
-//                }
-//
-//                if (endZoneFlag && Grid.isInStartZone(robot.getPosX() + 2, robot.getPosY())) {
-//                    startZoneFlag = true;
-//                }
-//                //AT THIS STAGE, ROBOT SHOULD HAVE RETURNED BACK TO START POINT.
-//            }
+//             IF EXPLORATION COMPLETED & HAVE NOT GO BACK TO START, FIND THE FASTEST PATH BACK TO START POINT
+            if(grid.checkExploredPercentage() == 100 && !startZoneFlag){
+                Robot fakeRobot = new Robot(grid, new ArrayList<>());
+                fakeRobot.setPosX(robot.getPosX());
+                fakeRobot.setPosY(robot.getPosY());
+                fakeRobot.setHeading(robot.getHeading());
+                List<String> returnPath = AlgorithmRunner.runAstar(robot.getPosX(), robot.getPosY(), START_X, START_Y, grid, fakeRobot);
+                System.out.println("return path constructed: ");
+                if(returnPath == null) {
+                	System.out.println("unreachable");
+                	continue;
+                }
+                StringBuilder builder = new StringBuilder();
+                for(int i = 0;i< returnPath.size();i++) {
+                	builder.append(returnPath.get(i));
+                	System.out.print(returnPath.get(i)+' ');
+                }
+                System.out.println("");
+                fakeRobot.setPosX(robot.getPosX());
+                fakeRobot.setPosY(robot.getPosY());
+                fakeRobot.setHeading(robot.getHeading());
+//                String compressed = AlgorithmRunner.compressPathForExploration(returnPath, fakeRobot);
+//                System.out.println("compressed string path: ");
+//                System.out.println(compressed);
+
+                if (returnPath != null) {
+                    System.out.println("Algorithm finished, executing actions");
+                    System.out.println(returnPath.toString());
+                    if (realRun) {
+                        SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, builder.toString());
+                    }
+
+                    for (String action : returnPath) {
+                        if (action.equals("M")) {
+                            robot.move();
+                        } else if (action.equals("L")) {
+                            robot.turn(LEFT);
+                        } else if (action.equals("R")) {
+                            robot.turn(RIGHT);
+                        } else if (action.equals("T")) {
+                            robot.turn(LEFT);
+                            robot.turn(LEFT);
+                        }
+//                        robot.sense(realRun);
+                        if (realRun)
+                            SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
+                                    MessageMgr.generateMapDescriptorMsg(grid.generateForAndroid(),
+                                            robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
+                        stepTaken();
+                    }
+                } else {
+                    System.out.println("Fastest path not found!");
+                }
+
+                if (endZoneFlag && Grid.isInStartZone(robot.getPosX() + 2, robot.getPosY())) {
+                    startZoneFlag = true;
+                }
+                //AT THIS STAGE, ROBOT SHOULD HAVE RETURNED BACK TO START POINT.
+            }
         }
 
         //
