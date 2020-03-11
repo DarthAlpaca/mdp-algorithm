@@ -267,10 +267,9 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                 pastMovements.add("M");
                 recordRobotPosition(robot);
-                
-                if(robot.getNeedToCheckRight()) {
-                	checkRight(robot, grid, realRun);
-                }
+//                if(robot.getNeedToCheckRight()) {
+//                	checkRight(robot, grid, realRun);
+//                }
                 
                 
             }else {
