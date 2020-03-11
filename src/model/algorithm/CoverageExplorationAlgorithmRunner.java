@@ -52,7 +52,7 @@ public class CoverageExplorationAlgorithmRunner implements AlgorithmRunner{
 
         while (grid.checkExploredPercentage() < coveragePercentage) {
             Cell position = new Cell(robot.getPosX(), robot.getPosY());
-            robot.sense(realRun);
+            robot.sense(realRun,"I");
             if (robot.isObstacleAhead()) {
                 if (robot.isObstacleRight() && robot.isObstacleLeft()) {
                     System.out.println("OBSTACLE DETECTED! (ALL 3 SIDES) U-TURNING");
@@ -69,13 +69,13 @@ public class CoverageExplorationAlgorithmRunner implements AlgorithmRunner{
                     robot.turn(LEFT);
                     stepTaken();
                 }
-                robot.sense(realRun);
+                robot.sense(realRun,"I");
                 System.out.println("-----------------------------------------------");
             } else if (!robot.isObstacleLeft()) {
                 System.out.println("NO OBSTACLES ON THE LEFT! TURNING LEFT");
                 robot.turn(LEFT);
                 stepTaken();
-                robot.sense(realRun);
+                robot.sense(realRun,"I");
                 System.out.println("-----------------------------------------------");
             }
             robot.move();
@@ -99,7 +99,7 @@ public class CoverageExplorationAlgorithmRunner implements AlgorithmRunner{
                     robot.turn(LEFT);
                 } else if (action.equals("R")) {
                     robot.turn(RIGHT);
-                } else if (action.equals("U")) {
+                } else if (action.equals("T")) {
                     robot.turn(LEFT);
                     robot.turn(LEFT);
                 }

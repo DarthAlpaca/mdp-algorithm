@@ -76,7 +76,7 @@ public class TimeExplorationAlgorithmRunner implements AlgorithmRunner{
         while (millisecondsTotal > 0 && (!endZoneFlag || !startZoneFlag)) {
             Cell position = new Cell(robot.getPosX(), robot.getPosY());
             pathTaken.push(position);
-            robot.sense(realRun);
+            robot.sense(realRun,"I");
             if (robot.isObstacleAhead()) {
                 if (robot.isObstacleRight() && robot.isObstacleLeft()) {
                     System.out.println("OBSTACLE DETECTED! (ALL 3 SIDES) U-TURNING");
@@ -96,14 +96,14 @@ public class TimeExplorationAlgorithmRunner implements AlgorithmRunner{
                     stepTaken();
                     millisecondsTotal = millisecondsTotal - sleepDuration;
                 }
-                robot.sense(realRun);
+                robot.sense(realRun,"I");
                 System.out.println("-----------------------------------------------");
             } else if (!robot.isObstacleLeft()) {
                 System.out.println("NO OBSTACLES ON THE LEFT! TURNING LEFT");
                 robot.turn(LEFT);
                 stepTaken();
                 millisecondsTotal = millisecondsTotal - sleepDuration;
-                robot.sense(realRun);
+                robot.sense(realRun,"I");
                 System.out.println("-----------------------------------------------");
             }
             robot.move();
@@ -135,7 +135,7 @@ public class TimeExplorationAlgorithmRunner implements AlgorithmRunner{
                     robot.turn(LEFT);
                 } else if (action.equals("R")) {
                     robot.turn(RIGHT);
-                } else if (action.equals("U")) {
+                } else if (action.equals("T")) {
                     robot.turn(LEFT);
                     robot.turn(LEFT);
                 }

@@ -58,6 +58,7 @@ public class Grid extends Observable {
         if (isOutOfArena(x, y))
             return;
         cells[x][y].updateCounter(value);
+        System.out.println("x: "+Integer.toString(x)+", y: "+Integer.toString(y)+"reliability: "+Integer.toString(value));
     }
 
     public void setExplored(int x, int y, boolean explored) {
@@ -86,7 +87,7 @@ public class Grid extends Observable {
         return (cellsExplored / totalCells) * 100;
     }
 
-    public void loadFromDisk(String path) throws IOException {
+    public void loadSpecialFromDisk(String path) throws IOException {
         this.reset();
 
         BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -96,12 +97,29 @@ public class Grid extends Observable {
             String[] numberStrings = line.trim().split("\\s+");
             for (int j = 0; j < MAP_COLS; j++) {
                 if (numberStrings[j].equals("1")) {
+                    this.setObstacleProbability(j, i, 10000);
+                } else {
+                	this.setObstacleProbability(j, i, -10000);
+                }
+            }
+        }
+    }
+    
+    public void loadFromDisk(String path) throws IOException {
+    	this.reset();
+    	BufferedReader reader = new BufferedReader(new FileReader(path));
+    	
+    	for (int i = 0; i < MAP_ROWS; i++) {
+            String line = reader.readLine();
+            String[] numberStrings = line.trim().split("\\s+");
+            for (int j = 0; j < MAP_COLS; j++) {
+                if (numberStrings[j].equals("1")) {
                     this.setIsObstacle(j, i, true);
                 } else {
                     this.setIsObstacle(j, i, false);
                 }
             }
-        }
+        }	
     }
 
     public String generateDescriptorPartOne() {
@@ -157,6 +175,11 @@ public class Grid extends Observable {
         System.out.println(builder.toString());
 
         return builder.toString();
+    }
+    
+    public String generateAllForAndroid() {
+    	String msg = generateDescriptorPartOne() + "," + generateDescriptorPartTwo();
+    	return msg;
     }
 
     public String generateForAndroid() {
