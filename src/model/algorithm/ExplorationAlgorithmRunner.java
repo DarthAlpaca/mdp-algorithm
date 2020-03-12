@@ -9,6 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import java.util.Date;
+import java.util.HashMap;
+import java.sql.Timestamp;
+import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.JOptionPane;
 
 import static constant.CommConstants.TARGET_ANDROID;
@@ -21,6 +30,12 @@ import static constant.RobotConstants.*;
  * Algorithm for exploration phase (full exploration)
  */
 public class ExplorationAlgorithmRunner implements AlgorithmRunner {
+
+    long startTime = System.currentTimeMillis();
+    HashMap<Long, List<Integer>> TimeStampForEachCellHashMap = new HashMap<Long, List<Integer>>();
+    List<Integer> CurrentCoordinates = new ArrayList<Integer>();
+    List<Integer> CopiedCurrentCoordinates = new ArrayList<Integer>();
+    List<Long> ListOfElapsedTime = new ArrayList<Long>();
 
     private int sleepDuration;
     private static final int START_X = 0;
@@ -194,6 +209,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 //        }
 //    }
 
+
     private void runExplorationAlgorithmThorough(Grid grid, Robot robot, boolean realRun) {
         boolean endZoneFlag = false;
         boolean startZoneFlag = false;
@@ -259,6 +275,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             // MOVE FORWARD
             if (realRun)
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
+
             
             boolean haveMoved = senseAndUpdateAndroid(robot, grid, realRun, "M");
             if(haveMoved) {
@@ -595,6 +612,23 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         	System.out.print(pastMovements.get(i)+' ');
         }
         System.out.println("PERCENTAGE OF AREA EXPLORED: " + grid.checkExploredPercentage() + "%!");
+        System.out.println("Execution ends");
+        System.out.println("Start sending to RPi");
+        
+        // for testing of message parsing
+        String datafromRPi = MessageMgr.ReceivingImageDataJson();
+        //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
+        // HashMap<Long, List<Integer>> TimeStampForEachCellHashMap = new HashMap<Long, List<Integer>>();
+        // List<Integer> t = new ArrayList<>();
+        // long h = 1409;
+        // t.add(13);
+        // TimeStampForEachCellHashMap.put(h, t);
+        //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
+        //MessageMgr.sendingListPOST(TimeStampForEachCellHashMap);
+        System.out.println(TimeStampForEachCellHashMap);
+
+        MessageMgr.MatchImageDataFromTimeStamp(datafromRPi, TimeStampForEachCellHashMap);
+
     }
 
     /**
