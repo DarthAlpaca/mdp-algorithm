@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 
 import static constant.CommConstants.TARGET_ANDROID;
 import static constant.CommConstants.TARGET_ARDUINO;
+import static constant.CommConstants.TARGET_RPIIMAGE;
 import static constant.MapConstants.MAP_COLS;
 import static constant.MapConstants.MAP_ROWS;
 import static constant.RobotConstants.*;
@@ -107,7 +108,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 //        String part1 = grid.generateDescriptorPartOne();
 //        String part2 = grid.generateDescriptorPartTwo();
         SocketMgr.getInstance().sendMessage(TARGET_ANDROID, m);
-        
+        stepTaken();
+        SocketMgr.getInstance().sendMessage(TARGET_ANDROID, m);
         AlgorithmRunner algorithmRunner = new FastestPathAlgorithmRunner(speed, wayPointX, wayPointY);
         algorithmRunner.run(grid, robot,realRun);
     }
@@ -235,7 +237,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             // CHECK IF TURNING IS NECESSARY
         	boolean turned = false;
         	do {
-        		turned = leftWallFollower(robot, grid, realRun);
+                turned = leftWallFollower(robot, grid, realRun);
+                //recordTimeStamp(robot);
         	}while(robot.isObstacleAhead());
         	System.out.println("turned");
 
@@ -284,6 +287,10 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                 pastMovements.add("M");
                 recordRobotPosition(robot);
+                //recordTimeStamp(robot);
+              
+                SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
+
 //                if(robot.getNeedToCheckRight()) {
 //                	checkRight(robot, grid, realRun);
 //                }
@@ -417,7 +424,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             boolean turned = leftWallFollower(robot, grid, realRun);
 
                             do {
-                        		turned = leftWallFollower(robot, grid, realRun);
+                                turned = leftWallFollower(robot, grid, realRun);
+                                //recordTimeStamp(robot);
                         	}while(robot.isObstacleAhead());
                         	System.out.println("turned");
 
@@ -465,6 +473,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                 pastMovements.add("M");
                                 recordRobotPosition(robot);
+                                //recordTimeStamp(robot);
 //                                if(robot.getNeedToCheckRight()) {
 //                                	checkRight(robot, grid, realRun);
 //                                }
@@ -493,7 +502,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                                 turned = leftWallFollower(robot, grid, realRun);
 
                                 do {
-                            		turned = leftWallFollower(robot, grid, realRun);
+                                    turned = leftWallFollower(robot, grid, realRun);
+                                    //recordTimeStamp(robot);
                             	}while(robot.isObstacleAhead());
                             	System.out.println("turned");
 
@@ -541,6 +551,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                                 	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                     pastMovements.add("M");
                                     recordRobotPosition(robot);
+                                    //recordTimeStamp(robot);
 //                                    if(robot.getNeedToCheckRight()) {
 //                                    	checkRight(robot, grid, realRun);
 //                                    }
@@ -616,18 +627,15 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         System.out.println("Start sending to RPi");
         
         // for testing of message parsing
-        String datafromRPi = MessageMgr.ReceivingImageDataJson();
+        //String datafromRPi = MessageMgr.ReceivingImageDataJson();
         //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
-        // HashMap<Long, List<Integer>> TimeStampForEachCellHashMap = new HashMap<Long, List<Integer>>();
-        // List<Integer> t = new ArrayList<>();
-        // long h = 1409;
-        // t.add(13);
+        MessageMgr.ReceivingImageDataJson();
         // TimeStampForEachCellHashMap.put(h, t);
         //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
         //MessageMgr.sendingListPOST(TimeStampForEachCellHashMap);
-        System.out.println(TimeStampForEachCellHashMap);
+        //System.out.println(TimeStampForEachCellHashMap);
 
-        MessageMgr.MatchImageDataFromTimeStamp(datafromRPi, TimeStampForEachCellHashMap);
+        //MessageMgr.MatchImageDataFromTimeStamp(datafromRPi, TimeStampForEachCellHashMap);
 
     }
 
@@ -648,11 +656,13 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                     recordRobotPosition(robot);
                     stepTaken();
                     robot.sense(realRun,"R");
+                    SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
                     SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
                     stepTaken();
                     robot.sense(realRun,"R");
                     pastMovements.add("R");
                     recordRobotPosition(robot);
+                    SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
                 }
                 robot.turn(RIGHT);
                 robot.turn(RIGHT);
@@ -667,6 +677,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 robot.sense(realRun,"R");
                 pastMovements.add("R");
                 recordRobotPosition(robot);
+                SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             } else {
                 System.out.println("OBSTACLE DETECTED! (FRONT) TURNING LEFT");
                 if (realRun)
@@ -676,6 +687,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 robot.sense(realRun,"L");
                 pastMovements.add("L");
                 recordRobotPosition(robot);
+                SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             }
             System.out.println("-----------------------------------------------");
 
@@ -690,6 +702,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             robot.sense(realRun,"L");
             pastMovements.add("L");
             recordRobotPosition(robot);
+            SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             System.out.println("-----------------------------------------------");
 
             return true; // TURNED
@@ -809,8 +822,20 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         if (realRun) {
             SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
                     MessageMgr.generateMapDescriptorMsg(grid.generateAllForAndroid(),
-                            robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
+                            robot.getCenterPosX(), robot.getCenterPosY()+1, robot.getHeading()));
         }
         return result;
     }
+    /*
+    private void recordTimeStamp(Robot robot){
+        long endTime = System.currentTimeMillis();
+        long timeElapsed = endTime - startTime;
+        ListOfElapsedTime.add(timeElapsed);
+        CurrentCoordinates.add(robot.getCenterPosX());
+        CurrentCoordinates.add(20 - robot.getCenterPosY());
+        List<Integer> CopiedCurrentCoordinates = new ArrayList<Integer>(CurrentCoordinates); 
+        TimeStampForEachCellHashMap.put(timeElapsed, CopiedCurrentCoordinates);
+        CurrentCoordinates.clear();
+    }
+    */
 }
