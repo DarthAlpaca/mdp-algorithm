@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,19 +126,24 @@ public class MessageMgr {
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
         http.setRequestMethod("POST"); // PUT is another valid option
         http.setDoOutput(true);
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(byteOut);
-        byte[] output = byteOut.toByteArray();
-        out.writeObject(data);
+        byte[] output = data.toString().getBytes(StandardCharsets.UTF_8);
+        //ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        //ObjectOutputStream out = new ObjectOutputStream(byteOut);
+        //byte[] output = byteOut.toByteArray();
+        //out.writeObject(data);
         http.setFixedLengthStreamingMode(output.length);
-        http.setRequestProperty("Content-Type", "application/json");
-        http.setRequestProperty("charset", "utf-8");
+        //http.setRequestProperty("Content-Type", "application/json");
+        //http.setRequestProperty("charset", "utf-8");
         http.connect();
         try (OutputStream os = http.getOutputStream()) { os.write(output); }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    
+
+
 
     public static void sendingListPOST(List<Long> data) {
         try {
