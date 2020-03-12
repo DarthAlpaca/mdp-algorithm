@@ -238,7 +238,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         	boolean turned = false;
         	do {
                 turned = leftWallFollower(robot, grid, realRun);
-                recordTimeStamp(robot);
+                //recordTimeStamp(robot);
         	}while(robot.isObstacleAhead());
         	System.out.println("turned");
 
@@ -287,7 +287,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                 pastMovements.add("M");
                 recordRobotPosition(robot);
-                recordTimeStamp(robot);
+                //recordTimeStamp(robot);
               
                 SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
 
@@ -425,7 +425,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
                             do {
                                 turned = leftWallFollower(robot, grid, realRun);
-                                recordTimeStamp(robot);
+                                //recordTimeStamp(robot);
                         	}while(robot.isObstacleAhead());
                         	System.out.println("turned");
 
@@ -473,7 +473,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                 pastMovements.add("M");
                                 recordRobotPosition(robot);
-                                recordTimeStamp(robot);
+                                //recordTimeStamp(robot);
 //                                if(robot.getNeedToCheckRight()) {
 //                                	checkRight(robot, grid, realRun);
 //                                }
@@ -503,7 +503,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
                                 do {
                                     turned = leftWallFollower(robot, grid, realRun);
-                                    recordTimeStamp(robot);
+                                    //recordTimeStamp(robot);
                             	}while(robot.isObstacleAhead());
                             	System.out.println("turned");
 
@@ -551,7 +551,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                                 	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                     pastMovements.add("M");
                                     recordRobotPosition(robot);
-                                    recordTimeStamp(robot);
+                                    //recordTimeStamp(robot);
 //                                    if(robot.getNeedToCheckRight()) {
 //                                    	checkRight(robot, grid, realRun);
 //                                    }
@@ -628,14 +628,14 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         
         // for testing of message parsing
         //String datafromRPi = MessageMgr.ReceivingImageDataJson();
-        String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
-        
+        //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
+        MessageMgr.ReceivingImageDataJson();
         // TimeStampForEachCellHashMap.put(h, t);
         //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
         //MessageMgr.sendingListPOST(TimeStampForEachCellHashMap);
-        System.out.println(TimeStampForEachCellHashMap);
+        //System.out.println(TimeStampForEachCellHashMap);
 
-        MessageMgr.MatchImageDataFromTimeStamp(datafromRPi, TimeStampForEachCellHashMap);
+        //MessageMgr.MatchImageDataFromTimeStamp(datafromRPi, TimeStampForEachCellHashMap);
 
     }
 
@@ -826,7 +826,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         }
         return result;
     }
-
+    /*
     private void recordTimeStamp(Robot robot){
         long endTime = System.currentTimeMillis();
         long timeElapsed = endTime - startTime;
@@ -837,4 +837,5 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         TimeStampForEachCellHashMap.put(timeElapsed, CopiedCurrentCoordinates);
         CurrentCoordinates.clear();
     }
+    */
 }
