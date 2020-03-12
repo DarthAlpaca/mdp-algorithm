@@ -663,7 +663,14 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         // for testing of message parsing
         //String datafromRPi = MessageMgr.ReceivingImageDataJson();
         //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
-        MessageMgr.ReceivingImageDataJson();
+
+
+        String datafromRPi = MessageMgr.ReceivingImageDataJson();
+        String XYresult = MessageMgr.matchClassIDandCoordinates(datafromRPi, pastX, pastY);
+        //SocketMgr.getInstance().sendMessage(TARGET_ANDROID, XYresult);
+        System.out.println(XYresult);
+
+        
         // TimeStampForEachCellHashMap.put(h, t);
         //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
         //MessageMgr.sendingListPOST(TimeStampForEachCellHashMap);

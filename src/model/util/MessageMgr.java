@@ -118,28 +118,40 @@ public class MessageMgr {
     
     }
 
-    public static void sendingPOST(HashMap<Long, List<Integer>> data) {
-        try {
-        URL url = new URL(URLAddress);
-        HttpURLConnection http = (HttpURLConnection) url.openConnection();
-        http.setRequestMethod("POST"); // PUT is another valid option
-        http.setDoOutput(true);
-        byte[] output = data.toString().getBytes(StandardCharsets.UTF_8);
-        //ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        //ObjectOutputStream out = new ObjectOutputStream(byteOut);
-        //byte[] output = byteOut.toByteArray();
-        //out.writeObject(data);
-        http.setFixedLengthStreamingMode(output.length);
-        //http.setRequestProperty("Content-Type", "application/json");
-        //http.setRequestProperty("charset", "utf-8");
-        http.connect();
-        try (OutputStream os = http.getOutputStream()) { os.write(output); }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // public static void sendingPOST(HashMap<Long, List<Integer>> data) {
+    //     try {
+    //     URL url = new URL(URLAddress);
+    //     HttpURLConnection http = (HttpURLConnection) url.openConnection();
+    //     http.setRequestMethod("POST"); // PUT is another valid option
+    //     http.setDoOutput(true);
+    //     byte[] output = data.toString().getBytes(StandardCharsets.UTF_8);
+    //     //ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+    //     //ObjectOutputStream out = new ObjectOutputStream(byteOut);
+    //     //byte[] output = byteOut.toByteArray();
+    //     //out.writeObject(data);
+    //     http.setFixedLengthStreamingMode(output.length);
+    //     //http.setRequestProperty("Content-Type", "application/json");
+    //     //http.setRequestProperty("charset", "utf-8");
+    //     http.connect();
+    //     try (OutputStream os = http.getOutputStream()) { os.write(output); }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
-    
+    public static String matchClassIDandCoordinates(String datafromRPi, List<Integer>X, List<Integer>Y) {
+        ArrayList<int[]> results = new ArrayList<>();
+        String[] arr = datafromRPi.split(",");
+        for (int i=0;i<arr.length; i++) {
+            if (Integer.parseInt(arr[i]) == -1) continue;
+            int[] res = new int[3];
+            res[0] = Integer.parseInt(arr[i]);
+            res[1] = X.get(i);
+            res[2] = Y.get(i);
+            results.add(res);
+        }
+        return "#im:"+results.toString();
+    }
 
 
 
