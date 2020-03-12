@@ -411,6 +411,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 //AT THIS STAGE, ROBOT SHOULD HAVE RETURNED BACK TO START POINT.
             }
         }
+        grid.markEverythingExplored();
 
         //
         // BELOW IS THE 2ND EXPLORATION !!!!!!!!!!!!!
@@ -423,7 +424,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 exploreChecker.setIsObstacle(x, y, grid.getIsObstacle(x, y));
             }
         }
-        grid.markEverythingExplored();
+        
 
         // SWEEPING THROUGH UNEXPLORED, BUT REACHABLE CELLS WITHIN ARENA.
         if(grid.checkExploredPercentage() < 100.0){ // CHECK FOR UNEXPLORED CELLS
@@ -653,22 +654,22 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             }
         }
         System.out.println("EXPLORATION COMPLETED!");
-        for(int i = 0;i<pastMovements.size();i++) {
-        	System.out.print(pastMovements.get(i)+' ');
-        }
+//        for(int i = 0;i<pastMovements.size();i++) {
+//        	System.out.print(pastMovements.get(i)+' ');
+//        }
         System.out.println("PERCENTAGE OF AREA EXPLORED: " + grid.checkExploredPercentage() + "%!");
         System.out.println("Execution ends");
-        System.out.println("Start sending to RPi");
+//        System.out.println("Start sending to RPi");
         
         // for testing of message parsing
         //String datafromRPi = MessageMgr.ReceivingImageDataJson();
         //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
 
 
-        String datafromRPi = MessageMgr.ReceivingImageDataJson();
-        String XYresult = MessageMgr.matchClassIDandCoordinates(datafromRPi, pastX, pastY);
+//        String datafromRPi = MessageMgr.ReceivingImageDataJson();
+//        String XYresult = MessageMgr.matchClassIDandCoordinates(datafromRPi, pastX, pastY);
         //SocketMgr.getInstance().sendMessage(TARGET_ANDROID, XYresult);
-        System.out.println(XYresult);
+//        System.out.println(XYresult);
 
         
         // TimeStampForEachCellHashMap.put(h, t);
