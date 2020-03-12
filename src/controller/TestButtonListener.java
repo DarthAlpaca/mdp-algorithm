@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 import model.entity.Grid;
 import model.entity.Robot;
+import model.util.MessageMgr;
+import model.util.SocketMgr;
 import test.CommTester;
 import view.Simulator;
 import static constant.CommConstants.TARGET_ANDROID;
@@ -38,20 +40,27 @@ public class TestButtonListener implements ActionListener {
 		if(choice==0) {
 			System.out.println("general test");
 			result = tester.test_general();
+//			mRobot.setPosX(2);
+//			mRobot.setPosY(16);
+//			result = tester.test_astar(mRobot.getPosX(),mRobot.getPosY(),0,17,mGrid, mRobot);
 		}
 		else if(choice == 1) {
 			System.out.println("test connection");
 			result = tester.testConnection();
 		}
 		else if(choice == 2) {
-			System.out.println("test Arduino");
-			String instruction = JOptionPane.showInputDialog(null, "Please input your instruction", "Arduino Instruction", JOptionPane.QUESTION_MESSAGE);
-			result = tester.testSendingMessage(TARGET_ARDUINO, instruction);
+			SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
+//			mRobot.sense(true);
+//			System.out.println("test Arduino");
+//			String instruction = JOptionPane.showInputDialog(null, "Please input your instruction", "Arduino Instruction", JOptionPane.QUESTION_MESSAGE);
+//			result = tester.testSendingMessage(TARGET_ARDUINO, instruction);
 		}
 		
 		else if(choice == 3) {
 			System.out.println("test Android");
-			result = tester.testSendingMessage(TARGET_ANDROID, "test");
+			String msg =  MessageMgr.generateMapDescriptorMsg(mGrid.generateAllForAndroid(), mRobot.getCenterPosX(), mRobot.getCenterPosY(), mRobot.getHeading());
+			System.out.println(msg);
+			result = tester.testSendingMessage(TARGET_ANDROID,msg);
 		}
 		else if(choice == 4) {
 			System.out.println("test receive message");

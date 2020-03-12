@@ -46,12 +46,12 @@ public class MessageMgr {
      */
     public static String generateMapDescriptorMsg(String descriptor, int x, int y, int heading) {
         StringBuilder builder = new StringBuilder();
-        builder.append("{\"robot\":\"");
+        builder.append("#r:");
         builder.append(descriptor);
         builder.append(",");
-        builder.append(MAP_ROWS - y);
+        builder.append(x);
         builder.append(",");
-        builder.append(x + 1);
+        builder.append(MAP_ROWS - y);
         builder.append(",");
         if (heading == NORTH) {
             builder.append(0);
@@ -62,7 +62,6 @@ public class MessageMgr {
         } else if (heading == WEST) {
             builder.append(270);
         }
-        builder.append("\"}");
         return builder.toString();
     }
 
