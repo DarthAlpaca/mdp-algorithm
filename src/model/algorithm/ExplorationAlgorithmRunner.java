@@ -235,7 +235,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             // CHECK IF TURNING IS NECESSARY
         	boolean turned = false;
         	do {
-        		turned = leftWallFollower(robot, grid, realRun);
+                turned = leftWallFollower(robot, grid, realRun);
+                recordTimeStamp(robot);
         	}while(robot.isObstacleAhead());
         	System.out.println("turned");
 
@@ -284,6 +285,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                 pastMovements.add("M");
                 recordRobotPosition(robot);
+                recordTimeStamp(robot);
 //                if(robot.getNeedToCheckRight()) {
 //                	checkRight(robot, grid, realRun);
 //                }
@@ -417,7 +419,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             boolean turned = leftWallFollower(robot, grid, realRun);
 
                             do {
-                        		turned = leftWallFollower(robot, grid, realRun);
+                                turned = leftWallFollower(robot, grid, realRun);
+                                recordTimeStamp(robot);
                         	}while(robot.isObstacleAhead());
                         	System.out.println("turned");
 
@@ -465,6 +468,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                 pastMovements.add("M");
                                 recordRobotPosition(robot);
+                                recordTimeStamp(robot);
 //                                if(robot.getNeedToCheckRight()) {
 //                                	checkRight(robot, grid, realRun);
 //                                }
@@ -493,7 +497,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                                 turned = leftWallFollower(robot, grid, realRun);
 
                                 do {
-                            		turned = leftWallFollower(robot, grid, realRun);
+                                    turned = leftWallFollower(robot, grid, realRun);
+                                    recordTimeStamp(robot);
                             	}while(robot.isObstacleAhead());
                             	System.out.println("turned");
 
@@ -541,6 +546,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                                 	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                     pastMovements.add("M");
                                     recordRobotPosition(robot);
+                                    recordTimeStamp(robot);
 //                                    if(robot.getNeedToCheckRight()) {
 //                                    	checkRight(robot, grid, realRun);
 //                                    }
@@ -616,12 +622,9 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         System.out.println("Start sending to RPi");
         
         // for testing of message parsing
-        String datafromRPi = MessageMgr.ReceivingImageDataJson();
-        //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
-        // HashMap<Long, List<Integer>> TimeStampForEachCellHashMap = new HashMap<Long, List<Integer>>();
-        // List<Integer> t = new ArrayList<>();
-        // long h = 1409;
-        // t.add(13);
+        //String datafromRPi = MessageMgr.ReceivingImageDataJson();
+        String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
+        
         // TimeStampForEachCellHashMap.put(h, t);
         //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
         //MessageMgr.sendingListPOST(TimeStampForEachCellHashMap);
@@ -812,5 +815,16 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
         }
         return result;
+    }
+
+    private void recordTimeStamp(Robot robot){
+        long endTime = System.currentTimeMillis();
+        long timeElapsed = endTime - startTime;
+        ListOfElapsedTime.add(timeElapsed);
+        CurrentCoordinates.add(robot.getCenterPosX());
+        CurrentCoordinates.add(20 - robot.getCenterPosY());
+        List<Integer> CopiedCurrentCoordinates = new ArrayList<Integer>(CurrentCoordinates); 
+        TimeStampForEachCellHashMap.put(timeElapsed, CopiedCurrentCoordinates);
+        CurrentCoordinates.clear();
     }
 }
