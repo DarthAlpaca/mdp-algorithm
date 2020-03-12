@@ -370,11 +370,11 @@ public class Robot extends Observable {
                 int range = mSensors.get(i).getRange();
                 int x = mSensors.get(i).getActualPosX();
                 int y = mSensors.get(i).getActualPosY();
-                if(i==5) {
-                	if(returnedDistance<2)continue;
+//                if(i==5) {
+//                	if(returnedDistance<2)continue;
 //                	if(returnedDistance>=3&&returnedDistance<=4)
 //                		setNeedToCheckRight(true);
-                }
+//                }
                 if(command.compareTo("M")!=0) {
 //                	if(i==5&&returnedDistance>=3&&returnedDistance<=4)
 //                		continue;

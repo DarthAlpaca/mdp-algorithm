@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 
 import static constant.CommConstants.TARGET_ANDROID;
 import static constant.CommConstants.TARGET_ARDUINO;
+import static constant.CommConstants.TARGET_RPIIMAGE;
 import static constant.MapConstants.MAP_COLS;
 import static constant.MapConstants.MAP_ROWS;
 import static constant.RobotConstants.*;
@@ -107,7 +108,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 //        String part1 = grid.generateDescriptorPartOne();
 //        String part2 = grid.generateDescriptorPartTwo();
         SocketMgr.getInstance().sendMessage(TARGET_ANDROID, m);
-        
+        stepTaken();
+        SocketMgr.getInstance().sendMessage(TARGET_ANDROID, m);
         AlgorithmRunner algorithmRunner = new FastestPathAlgorithmRunner(speed, wayPointX, wayPointY);
         algorithmRunner.run(grid, robot,realRun);
     }
@@ -286,6 +288,9 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 pastMovements.add("M");
                 recordRobotPosition(robot);
                 recordTimeStamp(robot);
+              
+                SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
+
 //                if(robot.getNeedToCheckRight()) {
 //                	checkRight(robot, grid, realRun);
 //                }
@@ -651,11 +656,13 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                     recordRobotPosition(robot);
                     stepTaken();
                     robot.sense(realRun,"R");
+                    SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
                     SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
                     stepTaken();
                     robot.sense(realRun,"R");
                     pastMovements.add("R");
                     recordRobotPosition(robot);
+                    SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
                 }
                 robot.turn(RIGHT);
                 robot.turn(RIGHT);
@@ -670,6 +677,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 robot.sense(realRun,"R");
                 pastMovements.add("R");
                 recordRobotPosition(robot);
+                SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             } else {
                 System.out.println("OBSTACLE DETECTED! (FRONT) TURNING LEFT");
                 if (realRun)
@@ -679,6 +687,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 robot.sense(realRun,"L");
                 pastMovements.add("L");
                 recordRobotPosition(robot);
+                SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             }
             System.out.println("-----------------------------------------------");
 
@@ -693,6 +702,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             robot.sense(realRun,"L");
             pastMovements.add("L");
             recordRobotPosition(robot);
+            SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             System.out.println("-----------------------------------------------");
 
             return true; // TURNED
@@ -812,7 +822,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         if (realRun) {
             SocketMgr.getInstance().sendMessage(TARGET_ANDROID,
                     MessageMgr.generateMapDescriptorMsg(grid.generateAllForAndroid(),
-                            robot.getCenterPosX(), robot.getCenterPosY(), robot.getHeading()));
+                            robot.getCenterPosX(), robot.getCenterPosY()+1, robot.getHeading()));
         }
         return result;
     }
