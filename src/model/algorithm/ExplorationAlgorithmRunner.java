@@ -117,6 +117,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
     private void calibrateAndTurn(Robot robot, boolean realRun) {
         if (realRun) {
+        	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
         	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "C");
         	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "L");
         	robot.turn(LEFT);
@@ -283,10 +284,6 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             // MOVE FORWARD
             if (realRun) {
                 SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "M");
-<<<<<<< HEAD
-
-=======
->>>>>>> a748c2bb3adc7a691e4a2d511e00c1bfce376706
                 boolean haveMoved = senseAndUpdateAndroid(robot, grid, realRun, "M");
                 if(haveMoved) {
                 	System.out.println("have moved!");
