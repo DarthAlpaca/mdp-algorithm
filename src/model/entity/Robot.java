@@ -250,7 +250,7 @@ public class Robot extends Observable {
             }
         }
         setChanged();
-        notifyObservers();
+//        notifyObservers();
     }
 
     public void turn(int direction) {
@@ -276,7 +276,7 @@ public class Robot extends Observable {
             mHeading = (mHeading + 1) % 4;
         }
         setChanged();
-        notifyObservers();
+//        notifyObservers();
     }
 
     public void reset() {
@@ -284,7 +284,7 @@ public class Robot extends Observable {
         mPosY = START_POS_Y;
         mHeading = NORTH;
         setChanged();
-        notifyObservers();
+//        notifyObservers();
     }
 
     /**
