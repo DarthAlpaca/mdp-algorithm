@@ -16,9 +16,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import model.entity.Sensor;
+
 import static constant.MapConstants.MAP_ROWS;
 import static constant.RobotConstants.*;
 import static constant.CommConstants.*;
+import model.entity.*;
 
 
 
@@ -139,19 +142,75 @@ public class MessageMgr {
     //     }
     // }
 
-    public static String matchClassIDandCoordinates(String datafromRPi, List<Integer>X, List<Integer>Y) {
-        ArrayList<int[]> results = new ArrayList<>();
-        String[] arr = datafromRPi.split(",");
-        for (int i=0;i<arr.length; i++) {
-            if (Integer.parseInt(arr[i]) == -1) continue;
-            int[] res = new int[3];
-            res[0] = Integer.parseInt(arr[i]);
-            res[1] = X.get(i);
-            res[2] = Y.get(i);
-            results.add(res);
+    public static String matchClassIDandCoordinates(String datafromRPi, List<Integer> robotHeadingsList, List<Integer>X, List<Integer>Y) {
+        //ArrayList<int[]> results = new ArrayList<>();
+
+        String finalResult = "";
+        datafromRPi = datafromRPi.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "");
+        String[] arr = datafromRPi.split(";");
+        String[] arrPosition= arr[1].replaceAll("^\"|\"$", "").split(",");
+        String[] arrIndexXY= arr[0].split(",");
+        int counter = 0;
+        for (int i=0;i<arrIndexXY.length; i++) {
+            if (Integer.parseInt(arrIndexXY[i]) == -1) continue;
+            else {
+            /*
+            NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3
+            */
+            switch (robotHeadingsList.get(i)) {
+                // NORTH
+                case 0: if (arrPosition[counter].equals("c")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(21 - Y.get(i)) + ")";
+                }else if (arrPosition[counter].equals("r")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(22 - Y.get(i)) + ")";
+                }else {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(20 - Y.get(i)) + ")";
+                }
+                break;
+                // EAST
+                case 1: if (arrPosition[counter].equals("c")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i))  + "," + Integer.toString(23 - Y.get(i)) + ")";
+                }else if (arrPosition[counter].equals("r")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+1)  + "," + Integer.toString(23 - Y.get(i)) + ")";
+                }else {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-1)  + "," + Integer.toString(23 - Y.get(i)) + ")";
+                }
+                break;
+                // SOUTH
+                case 2: if (arrPosition[counter].equals("c")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(21 - Y.get(i)) + ")";
+                }else if (arrPosition[counter].equals("r")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(21-1 - Y.get(i)) + ")";
+                }else {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(21+1 - Y.get(i)) + ")";
+                }
+                break;
+                // WEST
+                case 3: if (arrPosition[counter].equals("c")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i))  + "," + Integer.toString(21 -2- Y.get(i)) + ")";
+                }else if (arrPosition[counter].equals("r")) {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-1)  + "," + Integer.toString(21-2 - Y.get(i)) + ")";
+                }else {
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+1)  + "," + Integer.toString(21-2 - Y.get(i)) + ")";
+                }
+                break;
+            }
+            counter++;
+                //int[] res = new int[3];
+                //res[0] = Integer.parseInt(arr[i]);
+                //res[1] = X.get(i);
+                //res[2] = Y.get(i);
+                //results.add(res);
+            }
+
         }
-        return "#im:"+results.toString();
+        // for (String s : results){
+        //     finalResult += s + "\t";
+        // }
+        return "#im:"+finalResult;
     }
+
+
 
 
 

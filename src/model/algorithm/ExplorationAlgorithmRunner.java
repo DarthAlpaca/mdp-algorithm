@@ -48,6 +48,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
     private List<String> pastMovements = new ArrayList<String>();
     private List<Integer> pastX = new ArrayList<Integer>();
     private List<Integer> pastY = new ArrayList<Integer>();
+    private List<Integer> robotHeadingsList = new ArrayList<Integer>();
     
     public ExplorationAlgorithmRunner(int Speed){
     	speed = Speed;
@@ -288,6 +289,8 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 pastMovements.add("M");
                 recordRobotPosition(robot);
                 //recordTimeStamp(robot);
+                robotHeadingsList.add(robot.getHeading());
+
               
                 SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
 
@@ -473,6 +476,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                 pastMovements.add("M");
                                 recordRobotPosition(robot);
+                                robotHeadingsList.add(robot.getHeading());
                                 //recordTimeStamp(robot);
 //                                if(robot.getNeedToCheckRight()) {
 //                                	checkRight(robot, grid, realRun);
@@ -551,6 +555,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                                 	senseAndUpdateAndroid(robot, grid, realRun, "W");
                                     pastMovements.add("M");
                                     recordRobotPosition(robot);
+                                    robotHeadingsList.add(robot.getHeading());
                                     //recordTimeStamp(robot);
 //                                    if(robot.getNeedToCheckRight()) {
 //                                    	checkRight(robot, grid, realRun);
@@ -627,16 +632,22 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
         System.out.println("Start sending to RPi");
         
         // for testing of message parsing
-        //String datafromRPi = MessageMgr.ReceivingImageDataJson();
-        //String datafromRPi = "data = [303: [1]], [400: [[1],[2]]]";
-
-
-        String datafromRPi = MessageMgr.ReceivingImageDataJson();
-        String XYresult = MessageMgr.matchClassIDandCoordinates(datafromRPi, pastX, pastY);
-        //SocketMgr.getInstance().sendMessage(TARGET_ANDROID, XYresult);
-        System.out.println(XYresult);
 
         
+
+        String datafromRPi = MessageMgr.ReceivingImageDataJson();
+        System.out.println(" datafromRPi:" + datafromRPi);
+        System.out.println(" pastMovements:" + pastMovements);
+        System.out.println(" pastX:" + pastX);
+        System.out.println(" pastY:" + pastY);
+
+        String XYresult = MessageMgr.matchClassIDandCoordinates(datafromRPi, robotHeadingsList, pastX, pastY);
+        SocketMgr.getInstance().sendMessage(TARGET_ANDROID, XYresult);
+        System.out.println("Start Sending to android!");
+        System.out.println(XYresult);
+        System.out.println("Sending Completed!");
+
+
         // TimeStampForEachCellHashMap.put(h, t);
         //MessageMgr.sendingPOST(TimeStampForEachCellHashMap);
         //MessageMgr.sendingListPOST(TimeStampForEachCellHashMap);
@@ -669,6 +680,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                     robot.sense(realRun,"R");
                     pastMovements.add("R");
                     recordRobotPosition(robot);
+                    robotHeadingsList.add(robot.getHeading());
                     SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
                 }
                 robot.turn(RIGHT);
@@ -684,6 +696,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 robot.sense(realRun,"R");
                 pastMovements.add("R");
                 recordRobotPosition(robot);
+                robotHeadingsList.add(robot.getHeading());
                 SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             } else {
                 System.out.println("OBSTACLE DETECTED! (FRONT) TURNING LEFT");
@@ -694,6 +707,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
                 robot.sense(realRun,"L");
                 pastMovements.add("L");
                 recordRobotPosition(robot);
+                robotHeadingsList.add(robot.getHeading());
                 SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
             }
             System.out.println("-----------------------------------------------");
