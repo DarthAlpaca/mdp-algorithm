@@ -160,38 +160,38 @@ public class MessageMgr {
             switch (robotHeadingsList.get(i)) {
                 // NORTH
                 case 0: if (arrPosition[counter].equals("c")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(21 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(19 - Y.get(i)) + ")";
                 }else if (arrPosition[counter].equals("r")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(22 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(19 + 1 - Y.get(i)) + ")";
                 }else {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(20 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(19 - 1 - Y.get(i)) + ")";
                 }
                 break;
                 // EAST
                 case 1: if (arrPosition[counter].equals("c")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i))  + "," + Integer.toString(23 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i))  + "," + Integer.toString(19 + 2 - Y.get(i)) + ")";
                 }else if (arrPosition[counter].equals("r")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+1)  + "," + Integer.toString(23 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+1)  + "," + Integer.toString(19 + 2 - Y.get(i)) + ")";
                 }else {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-1)  + "," + Integer.toString(23 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-1)  + "," + Integer.toString(19 + 2 - Y.get(i)) + ")";
                 }
                 break;
                 // SOUTH
                 case 2: if (arrPosition[counter].equals("c")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(21 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(19 - Y.get(i)) + ")";
                 }else if (arrPosition[counter].equals("r")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(21-1 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(19 - 1 - Y.get(i)) + ")";
                 }else {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(21+1 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+2)  + "," + Integer.toString(19 + 1 - Y.get(i)) + ")";
                 }
                 break;
                 // WEST
                 case 3: if (arrPosition[counter].equals("c")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i))  + "," + Integer.toString(21 -2- Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i))  + "," + Integer.toString(19 - 2 - Y.get(i)) + ")";
                 }else if (arrPosition[counter].equals("r")) {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-1)  + "," + Integer.toString(21-2 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-1)  + "," + Integer.toString(19 - 2 - Y.get(i)) + ")";
                 }else {
-                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+1)  + "," + Integer.toString(21-2 - Y.get(i)) + ")";
+                    finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)+1)  + "," + Integer.toString(19 -  2 - Y.get(i)) + ")";
                 }
                 break;
             }
@@ -207,6 +207,7 @@ public class MessageMgr {
         // for (String s : results){
         //     finalResult += s + "\t";
         // }
+        finalResult = finalResult.replaceAll("-1", "0").replaceAll("-2", "0").replaceAll("-3", "0");
         return "#im:"+finalResult;
     }
 
