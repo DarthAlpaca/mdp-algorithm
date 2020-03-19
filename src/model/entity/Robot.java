@@ -375,6 +375,12 @@ public class Robot extends Observable {
 //                	if(returnedDistance>=3&&returnedDistance<=4)
 //                		setNeedToCheckRight(true);
 //                }
+                if(i==5) {
+                	if(returnedDistance<=range) {
+                		setNeedToCheckRight(true);
+                	}
+                	
+                }
                 if(command.compareTo("M")!=0) {
 //                	if(i==5&&returnedDistance>=3&&returnedDistance<=4)
 //                		continue;

@@ -304,9 +304,9 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
               
                 
 
-//                if(robot.getNeedToCheckRight()) {
-//                	checkRight(robot, grid, realRun);
-//                }
+                if(robot.getNeedToCheckRight()) {
+                	checkRight(robot, grid, realRun);
+                }
                 
                 
             }else {
@@ -892,9 +892,18 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
     	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
     	robot.turn(RIGHT);
     	senseAndUpdateAndroid(robot, grid, realRun, "R");
-    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "L");
-    	robot.turn(LEFT);
-    	senseAndUpdateAndroid(robot, grid, realRun, "L");
+    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+    	robot.turn(RIGHT);
+    	senseAndUpdateAndroid(robot, grid, realRun, "R");
+    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+    	robot.turn(RIGHT);
+    	senseAndUpdateAndroid(robot, grid, realRun, "R");
+    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+    	robot.turn(RIGHT);
+    	senseAndUpdateAndroid(robot, grid, realRun, "R");
+//    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "L");
+//    	robot.turn(LEFT);
+//    	senseAndUpdateAndroid(robot, grid, realRun, "L");
     	robot.setNeedToCheckRight(false);
     }
     
