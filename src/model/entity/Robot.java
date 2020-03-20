@@ -407,8 +407,8 @@ public class Robot extends Observable {
             // setNeedToCheckRight(turnCounter == 0);
 
             // if (command.compareTo("M") == 0) {
-            //     System.out.println("COMMAND " + command.compareTo("M"));
-            //     turnCounter++;
+	            // int xx = random.nextInt(100);
+	            // setNeedToCheckRight(xx < 20);
             // }
 
             // if (turnCounter > 2) turnCounter = 0;
@@ -422,8 +422,7 @@ public class Robot extends Observable {
 
 
 
-            // int xx = random.nextInt(100);
-            // setNeedToCheckRight(xx < 40);
+          
             return sensorReadings[6].compareTo("1")==0;
         } else {
             for (Sensor sensor : mSensors) {
