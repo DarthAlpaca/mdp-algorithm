@@ -5,6 +5,7 @@ import model.util.SocketMgr;
 import java.net.SocketException;
 import java.util.List;
 import java.util.Observable;
+import java.util.Random;
 
 import static constant.CommConstants.TARGET_ARDUINO;
 import static constant.RobotConstants.*;
@@ -18,8 +19,11 @@ public class Robot extends Observable {
     private int mHeading = NORTH;
     private boolean needToCheckRight = false;
     private Grid mGrid;
+    private boolean start = true;
     private List<Sensor> mSensors;
     private String sensorV;
+    private volatile int turnCounter = 0;
+    private Random random;
 
     public Robot(Grid grid, List<Sensor> sensors) {
         mGrid = grid;
@@ -27,6 +31,8 @@ public class Robot extends Observable {
         for (Sensor sensor : sensors) {
             sensor.setRobot(this);
         }
+
+        random = new Random();
     }
 
     public boolean isInRobot(int x, int y) {
@@ -338,6 +344,10 @@ public class Robot extends Observable {
      * @param realRun whether it's the physical robot
      */
     public boolean sense(boolean realRun, String command) {
+        // if(start) {
+        // setNeedToCheckRight(true);
+        // start=false;
+        // }
         if (realRun) {
 //            SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "I");
         	String sensorData;
@@ -375,18 +385,45 @@ public class Robot extends Observable {
 //                	if(returnedDistance>=3&&returnedDistance<=4)
 //                		setNeedToCheckRight(true);
 //                }
-                if(i==5) {
-                	if(returnedDistance<=range) {
-                		setNeedToCheckRight(true);
-                	}
-                	
-                }
+
+                // if (i == 5) { //right sensor
+                //     if (returnedDistance <= range) { //within range
+                //         setNeedToCheckRight(turnCounter == 0); //turn right at first
+                //     }
+
+                //     turnCounter++;
+                //     if (turnCounter > 2) turnCounter = 0;
+                // }
+               
+
+                
                 if(command.compareTo("M")!=0) {
 //                	if(i==5&&returnedDistance>=3&&returnedDistance<=4)
 //                		continue;
                 	updateMap(returnedDistance, heading, range, x, y, true, mSensors.get(i).getReliability());
                 }
             }
+
+            // setNeedToCheckRight(turnCounter == 0);
+
+            // if (command.compareTo("M") == 0) {
+            //     System.out.println("COMMAND " + command.compareTo("M"));
+            //     turnCounter++;
+            // }
+
+            // if (turnCounter > 2) turnCounter = 0;
+
+
+            // setNeedToCheckRight(turnCounter == 0);
+            // turnCounter++;
+            
+            // if(turnCounter >= 6) turnCounter = 0;           
+            // System.out.println("TURNCOUNTER " + turnCounter);
+
+
+
+            // int xx = random.nextInt(100);
+            // setNeedToCheckRight(xx < 40);
             return sensorReadings[6].compareTo("1")==0;
         } else {
             for (Sensor sensor : mSensors) {

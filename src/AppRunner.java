@@ -17,7 +17,7 @@ import static constant.RobotConstants.*;
 public class AppRunner {
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> { 
             // models
             Grid grid = new Grid();
             //setObstaclesMap(grid);

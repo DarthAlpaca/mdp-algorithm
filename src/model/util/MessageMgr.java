@@ -154,6 +154,7 @@ public class MessageMgr {
         for (int i=0;i<arrIndexXY.length; i++) {
             if (Integer.parseInt(arrIndexXY[i]) == -1) continue;
             else {
+                
             /*
             NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3
             */
@@ -163,7 +164,7 @@ public class MessageMgr {
                     finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(19 - Y.get(i)) + ")";
                 }else if (arrPosition[counter].equals("r")) {
                     finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(19 + 1 - Y.get(i)) + ")";
-                }else {
+                }else { 
                     finalResult += "("+arrIndexXY[i] + "," + Integer.toString(X.get(i)-2)  + "," + Integer.toString(19 - 1 - Y.get(i)) + ")";
                 }
                 break;
@@ -196,17 +197,11 @@ public class MessageMgr {
                 break;
             }
             counter++;
-                //int[] res = new int[3];
-                //res[0] = Integer.parseInt(arr[i]);
-                //res[1] = X.get(i);
-                //res[2] = Y.get(i);
-                //results.add(res);
+                
             }
 
         }
-        // for (String s : results){
-        //     finalResult += s + "\t";
-        // }
+        
         finalResult = finalResult.replaceAll("-1", "0").replaceAll("-2", "0").replaceAll("-3", "0");
         return "#im:"+finalResult;
     }

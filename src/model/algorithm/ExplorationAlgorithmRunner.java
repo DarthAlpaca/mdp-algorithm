@@ -49,6 +49,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
     private List<Integer> pastX = new ArrayList<Integer>();
     private List<Integer> pastY = new ArrayList<Integer>();
     private List<Integer> robotHeadingsList = new ArrayList<Integer>();
+    private String termination_Command_Received;
     
     public ExplorationAlgorithmRunner(int Speed){
     	speed = Speed;
@@ -300,8 +301,6 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             	robot.move();
             	senseAndUpdateAndroid(robot, grid, realRun, "W");
                 
-
-              
                 
 
                 if(robot.getNeedToCheckRight()) {
@@ -348,7 +347,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             }
 
 //             IF EXPLORATION COMPLETED & HAVE NOT GO BACK TO START, FIND THE FASTEST PATH BACK TO START POINT
-            if(grid.checkExploredPercentage() == 100 && !startZoneFlag){
+            if(grid.checkExploredPercentage() == 100 && !startZoneFlag) {
                 Robot fakeRobot = new Robot(grid, new ArrayList<>());
                 fakeRobot.setPosX(robot.getPosX());
                 fakeRobot.setPosY(robot.getPosY());
@@ -438,7 +437,10 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
 
                             do {
                                 turned = leftWallFollower(robot, grid, realRun);
+                                
+                                
                                 //recordTimeStamp(robot);
+                                
                         	}while(robot.isObstacleAhead());
                         	System.out.println("turned");
 
@@ -689,6 +691,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
      * @throws InterruptedException
      */
     private boolean leftWallFollower(Robot robot, Grid grid, boolean realRun) throws InterruptedException {
+        
         if (robot.isObstacleAhead()) {
             if (robot.isObstacleRight() && robot.isObstacleLeft()) {
                 System.out.println("OBSTACLE DETECTED! (ALL 3 SIDES) U-TURNING");
@@ -888,16 +891,57 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
     }
     
     
-    private void checkRight(Robot robot, Grid grid, boolean realRun) {
+    private void checkRight(Robot robot, Grid grid, boolean realRun) throws InterruptedException {
+        
+        Thread.sleep(500);
+        SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
+        Thread.sleep(500);
+        pastMovements.add("R");
+        recordRobotPosition(robot);
+        robotHeadingsList.add(robot.getHeading());
+        System.out.println( "robot position when taking photo X:" + robot.getCenterPosX());
+        System.out.println( "robot position when taking photo Y:" + robot.getCenterPosY());
+        
+        SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
+    	robot.turn(RIGHT);
+        senseAndUpdateAndroid(robot, grid, realRun, "R");
+        
+        Thread.sleep(500);
+        SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
+        Thread.sleep(500);
+        pastMovements.add("R");
+        recordRobotPosition(robot);
+        robotHeadingsList.add(robot.getHeading());
+        System.out.println( "robot position when taking photo X:" + robot.getCenterPosX());
+        System.out.println( "robot position when taking photo Y:" + robot.getCenterPosY());
+
+
     	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
     	robot.turn(RIGHT);
-    	senseAndUpdateAndroid(robot, grid, realRun, "R");
+        senseAndUpdateAndroid(robot, grid, realRun, "R");
+        
+        Thread.sleep(500);
+        SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
+        Thread.sleep(500);
+        pastMovements.add("R");
+        recordRobotPosition(robot);
+        robotHeadingsList.add(robot.getHeading());
+        System.out.println( "robot position when taking photo X:" + robot.getCenterPosX());
+        System.out.println( "robot position when taking photo Y:" + robot.getCenterPosY());
+
     	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
     	robot.turn(RIGHT);
-    	senseAndUpdateAndroid(robot, grid, realRun, "R");
-    	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
-    	robot.turn(RIGHT);
-    	senseAndUpdateAndroid(robot, grid, realRun, "R");
+        senseAndUpdateAndroid(robot, grid, realRun, "R");
+        
+        Thread.sleep(200);
+        SocketMgr.getInstance().sendMessage(TARGET_RPIIMAGE, "P");
+        Thread.sleep(300);
+        pastMovements.add("R");
+        recordRobotPosition(robot);
+        robotHeadingsList.add(robot.getHeading());
+        System.out.println( "robot position when taking photo X:" + robot.getCenterPosX());
+        System.out.println( "robot position when taking photo Y:" + robot.getCenterPosY());
+
     	SocketMgr.getInstance().sendMessage(TARGET_ARDUINO, "R");
     	robot.turn(RIGHT);
     	senseAndUpdateAndroid(robot, grid, realRun, "R");
