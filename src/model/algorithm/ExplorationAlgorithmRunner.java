@@ -319,6 +319,10 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             
             if(realRun)
             	emergencyAction(grid, robot, realRun);
+            
+            boolean needTerminate = false;
+            if(realRun)
+            	needTerminate = SocketMgr.getInstance().checkTerminate();
 
 //            // CALIBRATION
 //            if (realRun) {
@@ -347,7 +351,7 @@ public class ExplorationAlgorithmRunner implements AlgorithmRunner {
             }
 
 //             IF EXPLORATION COMPLETED & HAVE NOT GO BACK TO START, FIND THE FASTEST PATH BACK TO START POINT
-            if(grid.checkExploredPercentage() == 100 && !startZoneFlag) {
+            if(grid.checkExploredPercentage() == 100 && !startZoneFlag || needTerminate) {
                 Robot fakeRobot = new Robot(grid, new ArrayList<>());
                 fakeRobot.setPosX(robot.getPosX());
                 fakeRobot.setPosY(robot.getPosY());

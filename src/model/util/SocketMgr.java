@@ -19,7 +19,8 @@ public class SocketMgr {
     private BufferedReader mSocketReader;
     private static final int PORT = 9123;
     private static final String ADDRESS = "192.168.16.16";
-
+    private static boolean explorationTerminate = false; 
+    
     private SocketMgr() { }
 
     public static SocketMgr getInstance() {
@@ -61,6 +62,24 @@ public class SocketMgr {
         mSocketWriter.println(dest + msg);
         System.out.println("Sent message: " + dest + msg);
     }
+    
+    public boolean checkTerminate() {
+    	try {
+    		String msg;
+    		msg = mSocketReader.readLine();
+    		if(msg.compareTo("terminate")==0) {
+    			return true;
+    		}
+    		return false;
+    	} catch (SocketTimeoutException e) {
+    		e.printStackTrace();
+    		return false;
+    	} catch(IOException e) {
+    		e.printStackTrace();
+    		return false;
+    	}
+    }
+    
 
     public String receiveMessage(boolean sensor) {
         try {
@@ -79,6 +98,7 @@ public class SocketMgr {
 //        	msg = new String(m);
         	msg = mSocketReader.readLine();
             System.out.println("Received message: " + msg);
+
             return msg;
         } catch (SocketTimeoutException e) {
 //            System.out.println("Sensor reading timeout!!!");
